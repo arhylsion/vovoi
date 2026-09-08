@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <linearGradient id="shoeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00b4d8"/>
+      <stop offset="50%" stop-color="#0077b6"/>
+      <stop offset="100%" stop-color="#023e8a"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff7b00"/>
+      <stop offset="100%" stop-color="#ffb703"/>
+    </linearGradient>
+    <linearGradient id="soleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8f9fa"/>
+      <stop offset="100%" stop-color="#dee2e6"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="15" stdDeviation="12" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <ellipse cx="250" cy="300" rx="190" ry="20" fill="#cbd5e1" opacity="0.6"/>
+  <g filter="url(#shadow)">
+    <!-- Sole Bottom -->
+    <path d="M 90 260 C 130 265, 330 265, 410 240 C 425 235, 420 220, 395 215 C 340 215, 140 215, 95 225 C 80 230, 75 255, 90 260 Z" fill="#ff7b00"/>
+    <!-- Sole Mid -->
+    <path d="M 92 245 C 130 250, 330 250, 405 228 C 415 225, 412 210, 390 205 C 335 205, 145 205, 98 215 C 85 220, 80 240, 92 245 Z" fill="url(#soleGrad)"/>
+    <!-- Main Shoe Body -->
+    <path d="M 98 215 C 120 180, 150 160, 200 165 C 220 170, 250 140, 280 120 C 310 100, 345 105, 360 135 C 375 165, 385 185, 390 205 C 345 210, 145 210, 98 215 Z" fill="url(#shoeGrad)"/>
+    <!-- Dynamic Swoosh / Wave Accent -->
+    <path d="M 160 195 Q 240 180 320 135 Q 270 185 180 205 Z" fill="url(#accentGrad)"/>
+    <!-- Collar & Tongue -->
+    <path d="M 280 120 C 265 140, 255 160, 245 175 C 240 160, 250 135, 270 120 Z" fill="#03045e"/>
+    <path d="M 310 100 C 330 90, 350 105, 360 135 C 345 125, 330 115, 310 100 Z" fill="#ffb703"/>
+    <!-- Laces -->
+    <line x1="245" y1="165" x2="275" y2="155" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+    <line x1="255" y1="150" x2="285" y2="140" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+    <line x1="268" y1="135" x2="298" y2="125" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+    <!-- Toe Cap highlight -->
+    <path d="M 100 215 C 110 195, 130 185, 150 185 C 130 200, 115 210, 100 215 Z" fill="#ffffff" opacity="0.3"/>
+  </g>
+</svg>
