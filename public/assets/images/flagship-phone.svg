@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 680" width="100%" height="100%">
+  <defs>
+    <linearGradient id="phoneBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2c3645"/>
+      <stop offset="50%" stop-color="#1e2530"/>
+      <stop offset="100%" stop-color="#141922"/>
+    </linearGradient>
+    <linearGradient id="metalEdge" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4f5d73"/>
+      <stop offset="50%" stop-color="#2a3342"/>
+      <stop offset="100%" stop-color="#171d26"/>
+    </linearGradient>
+    <linearGradient id="lensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="70%" stop-color="#030712"/>
+      <stop offset="100%" stop-color="#1f2937"/>
+    </linearGradient>
+    <radialGradient id="lensReflect" cx="35%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="rgba(147, 197, 253, 0.4)"/>
+      <stop offset="40%" stop-color="rgba(59, 130, 246, 0.1)"/>
+      <stop offset="100%" stop-color="rgba(0, 0, 0, 0)"/>
+    </radialGradient>
+    <linearGradient id="islandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#252d3a"/>
+      <stop offset="100%" stop-color="#181e28"/>
+    </linearGradient>
+    <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#153e28"/>
+      <stop offset="50%" stop-color="#2d6a4f"/>
+      <stop offset="100%" stop-color="#081c15"/>
+    </linearGradient>
+    <filter id="shadowGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#0a0f18" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Phone Shadow and Outer Chassis -->
+  <g filter="url(#shadowGlow)">
+    <!-- Outer Edge Highlight -->
+    <rect x="110" y="40" width="280" height="580" rx="46" fill="url(#metalEdge)" stroke="#52637a" stroke-width="1.5"/>
+    <!-- Main Back Body -->
+    <rect x="113" y="43" width="274" height="574" rx="44" fill="url(#phoneBody)"/>
+  </g>
+
+  <!-- Antenna bands -->
+  <line x1="110" y1="120" x2="114" y2="120" stroke="#475569" stroke-width="2"/>
+  <line x1="386" y1="120" x2="390" y2="120" stroke="#475569" stroke-width="2"/>
+
+  <!-- Camera & Sub-display Island Module -->
+  <g filter="drop-shadow(0 6px 12px rgba(0,0,0,0.35))">
+    <rect x="135" y="65" width="230" height="155" rx="36" fill="url(#islandGrad)" stroke="#374151" stroke-width="1.2"/>
+  </g>
+
+  <!-- Dual Camera Lenses (Left side of island) -->
+  <!-- Top Lens -->
+  <g>
+    <circle cx="180" cy="112" r="30" fill="url(#metalEdge)" stroke="#4b5563" stroke-width="1.5"/>
+    <circle cx="180" cy="112" r="26" fill="url(#lensGrad)"/>
+    <circle cx="180" cy="112" r="18" fill="#0b0f19" stroke="#1f2937" stroke-width="1"/>
+    <circle cx="180" cy="112" r="26" fill="url(#lensReflect)"/>
+    <circle cx="174" cy="106" r="4" fill="rgba(255,255,255,0.6)"/>
+  </g>
+
+  <!-- Bottom Lens -->
+  <g>
+    <circle cx="180" cy="172" r="30" fill="url(#metalEdge)" stroke="#4b5563" stroke-width="1.5"/>
+    <circle cx="180" cy="172" r="26" fill="url(#lensGrad)"/>
+    <circle cx="180" cy="172" r="18" fill="#0b0f19" stroke="#1f2937" stroke-width="1"/>
+    <circle cx="180" cy="172" r="26" fill="url(#lensReflect)"/>
+    <circle cx="174" cy="166" r="4" fill="rgba(255,255,255,0.6)"/>
+  </g>
+
+  <!-- Secondary Rear Display (Right side of island) -->
+  <g>
+    <rect x="230" y="85" width="118" height="115" rx="20" fill="#000000" stroke="#334155" stroke-width="1"/>
+    <!-- Screen View (Lush Forest Wallpaper) -->
+    <rect x="233" y="88" width="112" height="109" rx="17" fill="url(#screenGrad)"/>
+    <path d="M233,140 Q 260,110 290,135 T 345,115 L 345,197 L 233,197 Z" fill="#1b4332" opacity="0.8"/>
+    <path d="M233,160 Q 275,130 310,165 T 345,145 L 345,197 L 233,197 Z" fill="#081c15"/>
+    <!-- Display Glare -->
+    <path d="M233,88 L320,88 L250,197 L233,197 Z" fill="rgba(255,255,255,0.08)"/>
+  </g>
+
+  <!-- Wireless Coil / MagSafe ring silhouette -->
+  <g opacity="0.35">
+    <circle cx="250" cy="380" r="65" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="8 6"/>
+  </g>
+
+  <!-- VOVOI Glyph Symbol on Back -->
+  <g transform="translate(210, 480)" opacity="0.65">
+    <circle cx="22" cy="22" r="18" fill="none" stroke="#94a3b8" stroke-width="3"/>
+    <circle cx="22" cy="22" r="7" fill="#94a3b8"/>
+    <circle cx="58" cy="22" r="18" fill="none" stroke="#94a3b8" stroke-width="3"/>
+    <circle cx="58" cy="22" r="7" fill="#94a3b8"/>
+    <line x1="0" y1="22" x2="6" y2="22" stroke="#94a3b8" stroke-width="3"/>
+    <line x1="74" y1="22" x2="80" y2="22" stroke="#94a3b8" stroke-width="3"/>
+  </g>
+</svg>
