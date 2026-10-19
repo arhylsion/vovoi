@@ -42,7 +42,7 @@
   <div class="v-container">
     <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--border-light); padding-bottom: 20px;">
       <div style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">
-        Showing 24 products
+        Showing {{ $products->count() }} products
       </div>
 
       <div>
@@ -126,86 +126,41 @@
       <div>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-bottom: 48px;">
           
-          <!-- Card 1: VOVOI Zen 2 -->
-          <x-product-card 
-            image="{{ asset('assets/images/zen2-phone.svg') }}"
-            badge="MANGGARAI"
-            badgeType="green"
-            title="VOVOI Zen 2"
-            price="$999"
-            desc="Studio-grade wireless fidelity."
-            serial="SM-8829-A"
-            url="/detail"
-            :inStock="true"
-          />
-
-          <!-- Card 2: Vovoi Watch Plus -->
-          <x-product-card 
-            image="{{ asset('assets/images/watch-plus.svg') }}"
-            badge="JAMBU DUA"
-            badgeType="green"
-            title="Vovoi Watch Plus"
-            price="$899"
-            desc="Advanced biometrics, refined design."
-            serial="SN-T441-B"
-            url="/detail"
-            :inStock="true"
-          />
-
-          <!-- Card 3: Vovoi Tab Ultra -->
-          <x-product-card 
-            image="{{ asset('assets/images/tab-ultra.svg') }}"
-            badge="OUT OF STOCK"
-            badgeType="red"
-            title="Vovoi Tab Ultra"
-            price="$1499"
-            desc="Uncompromising portable power."
-            serial="N/A"
-            url="/detail"
-            :inStock="false"
-          />
-
-          <!-- Card 4: VOVOI Phone X Pro -->
-          <x-product-card 
-            image="{{ asset('assets/images/phone-x-pro.svg') }}"
-            badge="MANGGARAI"
-            badgeType="green"
-            title="VOVOI Phone X Pro"
-            price="$844"
-            desc="Aerospace titanium powerhouse."
-            serial="SN-PX-908"
-            url="/detail"
-            :inStock="true"
-          />
-
-          <!-- Card 5: VOVOI Watch Ultra -->
-          <x-product-card 
-            image="{{ asset('assets/images/watch-plus.svg') }}"
-            badge="CAKUNG"
-            badgeType="green"
-            title="VOVOI Watch Ultra"
-            price="$1099"
-            desc="Rugged titanium expedition watch."
-            serial="SN-WU-209"
-            url="/detail"
-            :inStock="true"
-          />
-
-          <!-- Card 6: VOVOI Zen Studio -->
-          <x-product-card 
-            image="{{ asset('assets/images/flagship-phone.svg') }}"
-            badge="MANGGARAI"
-            badgeType="green"
-            title="VOVOI Studio Max"
-            price="$1299"
-            desc="Dual display ultra smartphone."
-            serial="SN-SM-770"
-            url="/detail"
-            :inStock="true"
-          />
+          <!-- BUKA MESIN LOOPING -->
+          @forelse($products as $product)
+            <!-- AREA DESAIN KOTAK PRODUK KALIAN -->
+            <x-product-card 
+              :image="$product->image ? asset('assets/images/' . $product->image) : null"
+              badge="TERSEDIA"
+              badgeType="green"
+              :title="$product->name"
+              :price="'Rp ' . number_format($product->price, 0, ',', '.')"
+              :desc="$product->description"
+              :serial="'VOVOI-' . str_pad($product->id, 4, '0', STR_PAD_LEFT)"
+              url="/detail/{( $product->id )}"
+              :inStock="true"
+            />
+          @empty
+            <!-- Kalau DATABASE KOSONG (Menampilkan Empty State Sesuai Ketentuan LKPD) -->
+            <div style="grid-column: 1 / -1; text-align: center; width: 100%; padding: 60px 24px; background: #FFFFFF; border: 1px dashed var(--border-light); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+              <div style="width: 64px; height: 64px; border-radius: 50%; background: #F8F9FA; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--text-secondary);">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path>
+                  <path d="m3.3 7 8.7 5 8.7-5"></path>
+                  <path d="M12 22V12"></path>
+                </svg>
+              </div>
+              <h3 style="color: #666; font-size: 20px; font-weight: 700; margin-bottom: 8px;">Mohon maaf, produk belum tersedia di etalase kami.</h3>
+              <p style="color: #999; font-size: 14px; max-width: 440px; margin: 0 auto; line-height: 1.6;">
+                Saat ini etalase produk belum memiliki data. Silakan lakukan proses seed database atau hubungi administrator toko.
+              </p>
+            </div>
+          @endforelse
+          <!-- TUTUP MESIN LOOPING -->
 
         </div>
 
+        @if($products->isNotEmpty())
         <!-- Pagination -->
         <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
           <button type="button" style="width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border-light); background: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-secondary); transition: all var(--transition-fast);">
@@ -232,6 +187,7 @@
             </svg>
           </button>
         </div>
+        @endif
 
       </div>
 

@@ -26,7 +26,13 @@
   </div>
 
   <a href="{{ $url }}" class="v-product-img-box" aria-label="{{ $title }}">
-    <img src="{{ $image }}" alt="{{ $title }}" loading="lazy">
+    @if($image)
+      <img src="{{ $image }}" alt="{{ $title }}" loading="lazy">
+    @else
+      <div style="background: #F1F3F5; height: 180px; width: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 13px; font-weight: 600; border-radius: var(--radius-sm);">
+        Tanpa Gambar
+      </div>
+    @endif
   </a>
 
   <div class="v-product-info">

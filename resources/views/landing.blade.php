@@ -6,14 +6,14 @@
 <section class="v-landing-hero" style="text-align: center; padding: 60px 20px 0; background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);">
   <div class="v-container">
     <h1 style="font-size: clamp(64px, 12vw, 120px); font-weight: 800; letter-spacing: -0.06em; line-height: 0.9; margin-bottom: 20px;">
-      vovoi
+      VOVOI
     </h1>
     <p style="font-size: clamp(18px, 3vw, 24px); font-weight: 600; color: var(--text-primary); margin-bottom: 40px; letter-spacing: -0.02em;">
       Meet The Ultimate VOVOI Flagship
     </p>
 
     <div style="max-width: 480px; margin: 0 auto -40px; position: relative; z-index: 1;">
-      <img src="{{ asset('assets/images/flagship-phone.svg') }}" alt="VOVOI Phone X Pro Flagship" style="width: 100%; height: auto; display: block;">
+      <img src="{{ asset('assets/images/hp-vovoi.png') }}" alt="VOVOI Phone X Pro Flagship" style="width: 100%; height: auto; display: block;">
     </div>
   </div>
 </section>
