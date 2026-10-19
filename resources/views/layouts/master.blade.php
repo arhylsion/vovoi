@@ -2,24 +2,22 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>E-Commerce Kelas XII</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'VOVOI - Beyond Ordinary')</title>
+    <meta name="description" content="Explore our curated collection of premium electronics, synced in real-time across all locations.">
+    <link rel="stylesheet" href="{{ asset('css/vovoi.css') }}">
+    @yield('extra_css')
 </head>
-<body style="font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f9;">
+<body>
 
-    <header style="background-color: #1a1a1a; color: white; padding: 15px 50px; display: flex; justify-content: space-between;">
-        <h2 style="margin: 0;">🛒 Techzone</h2>
-        <nav style="margin-top: 5px;">
-            <a href="/" style="color: white; text-decoration: none; margin-left: 20px;">Katalog</a>
-        </nav>
-    </header>
+    <x-navbar />
 
-    <main style="padding: 40px 50px; min-height: 70vh;">
+    <main style="flex: 1;">
         @yield('konten_utama')
     </main>
 
-    <footer style="background-color: #ddd; padding: 20px; text-align: center;">
-        <p style="margin: 0;">&copy; 2026 Hak Cipta Dilindungi - SMK Plus Pelita Nusantara</p>
-    </footer>
+    <x-footer />
 
+    @yield('extra_js')
 </body>
 </html>

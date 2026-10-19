@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 460" width="100%" height="100%">
+  <defs>
+    <filter id="tabShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000000" flood-opacity="0.14"/>
+    </filter>
+    <linearGradient id="laptopBody" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E2E8F0"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+  </defs>
+  <!-- VOVOI Tab Ultra Laptop & Tablet Duo View -->
+  <g filter="url(#tabShadow)">
+    <!-- Background Tablet Stand / Closed Unit -->
+    <path d="M50,160 L 140,110 L 220,160 L 130,210 Z" fill="#94A3B8" stroke="#64748B"/>
+    <!-- Main Open Laptop Perspective -->
+    <!-- Screen Portion -->
+    <path d="M140,70 L 370,120 L 350,270 L 120,220 Z" fill="#0A0B0D" stroke="#475569" stroke-width="2"/>
+    <path d="M150,85 L 355,130 L 340,255 L 135,210 Z" fill="#FFFFFF"/>
+    <!-- Screen Wireframe UI -->
+    <rect x="160" y="110" width="160" height="20" rx="3" fill="#F1F5F9" transform="skewY(12)"/>
+    <rect x="160" y="140" width="45" height="40" rx="3" fill="#E2E8F0" transform="skewY(12)"/>
+    <rect x="215" y="140" width="45" height="40" rx="3" fill="#E2E8F0" transform="skewY(12)"/>
+    <rect x="270" y="140" width="45" height="40" rx="3" fill="#E2E8F0" transform="skewY(12)"/>
+
+    <!-- Keyboard Base Portion -->
+    <path d="M120,220 L 350,270 L 290,390 L 60,330 Z" fill="url(#laptopBody)" stroke="#94A3B8" stroke-width="1.5"/>
+    <!-- Keyboard Key Grid -->
+    <path d="M125,235 L 325,280 L 285,340 L 95,295 Z" fill="#475569" opacity="0.85"/>
+    <!-- Trackpad -->
+    <path d="M160,320 L 240,338 L 225,370 L 145,352 Z" fill="#94A3B8" stroke="#64748B" stroke-width="1"/>
+  </g>
+</svg>

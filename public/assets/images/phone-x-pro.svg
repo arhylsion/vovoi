@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <filter id="floatShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="32" stdDeviation="28" flood-color="#0F172A" flood-opacity="0.18"/>
+    </filter>
+    <linearGradient id="silverTitanium" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#E2E8F0"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <linearGradient id="isoScreen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Isometric Floating Phone -->
+  <g filter="url(#floatShadow)" transform="translate(250, 220) rotate(-22) skewX(20) scale(0.85)">
+    <!-- Chassis Thickness (Side Rim) -->
+    <rect x="-130" y="-195" width="260" height="420" rx="36" fill="#94A3B8"/>
+    <!-- Front Face -->
+    <rect x="-130" y="-205" width="260" height="420" rx="36" fill="url(#silverTitanium)" stroke="#FFFFFF" stroke-width="3"/>
+    <!-- Display Bezel -->
+    <rect x="-122" y="-197" width="244" height="404" rx="30" fill="#0A0B0D"/>
+    <!-- Screen Content Preview -->
+    <rect x="-116" y="-191" width="232" height="392" rx="26" fill="url(#isoScreen)"/>
+    
+    <!-- Dynamic Island / Punch Hole -->
+    <rect x="-35" y="-180" width="70" height="18" rx="9" fill="#0A0B0D"/>
+    
+    <!-- Screen Wireframe UI Demo -->
+    <rect x="-95" y="-140" width="110" height="12" rx="4" fill="#0F172A"/>
+    <rect x="-95" y="-115" width="190" height="80" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <circle cx="-65" cy="-75" r="20" fill="#3B82F6" opacity="0.2"/>
+    <rect x="-30" y="-85" width="100" height="8" rx="4" fill="#64748B"/>
+    <rect x="-30" y="-70" width="60" height="6" rx="3" fill="#94A3B8"/>
+
+    <rect x="-95" y="-20" width="190" height="70" rx="12" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1.5"/>
+    <rect x="-95" y="65" width="190" height="90" rx="12" fill="#0F172A"/>
+    <rect x="-70" y="115" width="140" height="24" rx="6" fill="#10B981"/>
+  </g>
+</svg>

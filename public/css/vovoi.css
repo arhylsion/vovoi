@@ -1,0 +1,639 @@
+/* VOVOI Design System - Clean, Lightweight, High-Performance */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Color Palette */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F9FA;
+  --bg-tertiary: #F1F3F5;
+  --bg-card: #FFFFFF;
+  --bg-dark: #0A0B0D;
+  --bg-dark-card: #121316;
+  
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --text-light: #F8FAFC;
+
+  --border-light: #E2E8F0;
+  --border-medium: #CBD5E1;
+  --border-dark: #27272A;
+
+  --accent-green: #10B981;
+  --accent-green-bg: #ECFDF5;
+  --accent-red: #EF4444;
+  --accent-red-bg: #FEF2F2;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Container */
+.v-container {
+  width: 100%;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Navbar */
+.v-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+  transition: all var(--transition-fast);
+}
+
+.v-navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.v-logo {
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  transition: opacity var(--transition-fast);
+}
+
+.v-logo:hover {
+  opacity: 0.8;
+}
+
+.v-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.v-nav-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
+  position: relative;
+  padding: 6px 0;
+}
+
+.v-nav-link:hover {
+  color: var(--text-secondary);
+}
+
+.v-nav-link.active {
+  color: var(--text-primary);
+}
+
+.v-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: var(--radius-full);
+}
+
+.v-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.v-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  position: relative;
+  transition: background var(--transition-fast);
+}
+
+.v-icon-btn:hover {
+  background: var(--bg-tertiary);
+}
+
+.v-badge-dot {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  background: var(--text-primary);
+  border-radius: 50%;
+}
+
+/* Footer */
+.v-footer {
+  background: #FAFAFA;
+  border-top: 1px solid var(--border-light);
+  padding: 48px 0;
+  margin-top: auto;
+}
+
+.v-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.v-footer-logo {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.v-footer-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.v-footer-link {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.v-footer-link:hover {
+  color: var(--text-primary);
+}
+
+.v-footer-copy {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Monospace & Tech Badges */
+.v-tag-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.v-tag-mono.green {
+  color: #059669;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.v-tag-mono.red {
+  color: #DC2626;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.v-tag-mono.dark {
+  background: rgba(255, 255, 255, 0.1);
+  color: #CBD5E1;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.v-dot-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.v-dot-indicator.green {
+  background-color: var(--accent-green);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+.v-dot-indicator.red {
+  background-color: var(--accent-red);
+}
+
+/* Buttons */
+.v-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.v-btn-primary {
+  background: var(--text-primary);
+  color: #FFFFFF;
+}
+
+.v-btn-primary:hover {
+  background: #27272A;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.v-btn-secondary {
+  background: #FFFFFF;
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.v-btn-secondary:hover {
+  border-color: var(--text-primary);
+  background: var(--bg-secondary);
+}
+
+.v-btn-sm {
+  padding: 8px 18px;
+  font-size: 13px;
+}
+
+.v-btn-lg {
+  padding: 16px 36px;
+  font-size: 15px;
+}
+
+.v-btn-block {
+  width: 100%;
+}
+
+/* Product Card Component */
+.v-product-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+  position: relative;
+}
+
+.v-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--border-medium);
+}
+
+.v-product-card-top {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 2;
+}
+
+.v-product-img-box {
+  width: 100%;
+  height: 250px;
+  background: #F4F4F6;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 20px;
+  padding: 16px;
+  position: relative;
+}
+
+.v-product-img-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform var(--transition-normal);
+}
+
+.v-product-card:hover .v-product-img-box img {
+  transform: scale(1.04);
+}
+
+.v-product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.v-product-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.v-product-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.v-product-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  min-height: 38px;
+}
+
+.v-product-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-light);
+}
+
+.v-product-serial {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.v-product-serial span {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: #94A3B8;
+  text-transform: uppercase;
+}
+
+/* Feature Cards (Detail Page) */
+.v-feature-card {
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.v-feature-card.light {
+  background: #F8F9FA;
+  border: 1px solid var(--border-light);
+}
+
+.v-feature-card.dark {
+  background: #0B0C0E;
+  color: #F8FAFC;
+  border: 1px solid #1E2024;
+  background-image: radial-gradient(circle at 100% 0%, rgba(255,255,255,0.06) 0%, transparent 60%);
+}
+
+.v-feature-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.v-feature-card h3 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.v-feature-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.v-feature-card.light p {
+  color: var(--text-secondary);
+}
+
+.v-feature-card.dark p {
+  color: #94A3B8;
+}
+
+.v-feature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: gap var(--transition-fast);
+}
+
+.v-feature-link:hover {
+  gap: 10px;
+}
+
+.v-feature-card.light .v-feature-link {
+  color: var(--text-primary);
+}
+
+.v-feature-card.dark .v-feature-link {
+  color: #F8FAFC;
+}
+
+/* Form Styles */
+.v-form-group {
+  margin-bottom: 18px;
+}
+
+.v-form-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.v-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  background: #FFFFFF;
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.v-input:focus {
+  outline: none;
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 1px var(--text-primary);
+}
+
+/* Quantity Selector */
+.v-qty-selector {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 4px 8px;
+  gap: 14px;
+  background: #FFFFFF;
+}
+
+.v-qty-btn {
+  background: transparent;
+  border: none;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 50%;
+  transition: background var(--transition-fast);
+}
+
+.v-qty-btn:hover {
+  background: var(--bg-tertiary);
+}
+
+.v-qty-val {
+  font-weight: 700;
+  font-size: 14px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Warranty Preview Card Component */
+.v-warranty-box {
+  background: #0B0C0E;
+  color: #F8FAFC;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid #1E2024;
+}
+
+.v-warranty-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 16px;
+}
+
+.v-warranty-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #94A3B8;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.v-warranty-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.v-warranty-label {
+  color: #64748B;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.v-warranty-val {
+  color: #F8FAFC;
+  font-weight: 600;
+}
+
+.v-warranty-val.green {
+  color: var(--accent-green);
+}
+
+.v-warranty-note {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 12px;
+  color: #64748B;
+  line-height: 1.5;
+}
+
+/* Responsive Utilities */
+@media (max-width: 900px) {
+  .v-nav-links {
+    display: none;
+  }
+}
