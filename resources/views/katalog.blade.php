@@ -137,7 +137,8 @@
               :price="'Rp ' . number_format($product->price, 0, ',', '.')"
               :desc="$product->description"
               :serial="'VOVOI-' . str_pad($product->id, 4, '0', STR_PAD_LEFT)"
-              url="/detail/{( $product->id )}"
+              url="/detail/{{ $product->id }}"
+              buttonText="Lihat Detail"
               :inStock="true"
             />
           @empty

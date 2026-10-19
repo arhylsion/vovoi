@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'VOVOI Phone X Pro - VOVOI')
+@section('title', $product->name . ' - VOVOI')
 
 @section('konten_utama')
 <section style="padding: 28px 0 64px;">
@@ -10,9 +10,9 @@
     <nav style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 32px;">
       <a href="/katalog" style="color: var(--text-secondary);">Store</a>
       <span>&rsaquo;</span>
-      <a href="/katalog" style="color: var(--text-secondary);">Smartphone</a>
+      <a href="/katalog" style="color: var(--text-secondary);">Katalog</a>
       <span>&rsaquo;</span>
-      <span style="color: var(--text-primary); font-weight: 700;">VOVOI Phone X Pro</span>
+      <span style="color: var(--text-primary); font-weight: 700;">{{ $product->name }}</span>
     </nav>
 
     <!-- Product Main Grid (Gallery, Info, Sticky Buy Box) -->
@@ -21,13 +21,13 @@
       <!-- 1. Left Gallery Column -->
       <div>
         <div style="width: 100%; height: 420px; background: #F8F9FA; border-radius: var(--radius-lg); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 24px; margin-bottom: 16px;">
-          <img id="mainProductImg" src="{{ asset('assets/images/phone-x-pro.svg') }}" alt="VOVOI Phone X Pro" style="max-width: 100%; max-height: 100%; object-fit: contain; transition: transform var(--transition-normal);">
+          <img id="mainProductImg" src="{{ $product->image ? asset('assets/images/' . $product->image) : asset('assets/images/phone-x-pro.svg') }}" alt="{{ $product->name }}" style="max-width: 100%; max-height: 100%; object-fit: contain; transition: transform var(--transition-normal);">
         </div>
 
         <!-- Thumbnails -->
         <div style="display: flex; gap: 10px; justify-content: flex-start;">
-          <button type="button" class="v-thumb-btn active" onclick="switchThumb(this, '{{ asset('assets/images/phone-x-pro.svg') }}')" style="width: 60px; height: 60px; border-radius: var(--radius-sm); border: 2px solid var(--text-primary); background: #F8F9FA; padding: 4px; cursor: pointer;">
-            <img src="{{ asset('assets/images/phone-thumb1.svg') }}" alt="Angle 1" style="width: 100%; height: 100%; object-fit: contain;">
+          <button type="button" class="v-thumb-btn active" onclick="switchThumb(this, '{{ $product->image ? asset('assets/images/' . $product->image) : asset('assets/images/phone-x-pro.svg') }}')" style="width: 60px; height: 60px; border-radius: var(--radius-sm); border: 2px solid var(--text-primary); background: #F8F9FA; padding: 4px; cursor: pointer;">
+            <img src="{{ $product->image ? asset('assets/images/' . $product->image) : asset('assets/images/phone-thumb1.svg') }}" alt="Angle 1" style="width: 100%; height: 100%; object-fit: contain;">
           </button>
           
           <button type="button" class="v-thumb-btn" onclick="switchThumb(this, '{{ asset('assets/images/flagship-phone.svg') }}')" style="width: 60px; height: 60px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #F8F9FA; padding: 4px; cursor: pointer;">
@@ -51,7 +51,7 @@
       <!-- 2. Center Product Details Column -->
       <div>
         <h1 style="font-size: 36px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px;">
-          VOVOI Phone X Pro
+          {{ $product->name }}
         </h1>
 
         <!-- Rating & Sales -->
@@ -68,7 +68,7 @@
 
         <!-- Price -->
         <div id="productPriceDisplay" style="font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 24px;">
-          $844
+          Rp {{ number_format($product->price, 0, ',', '.') }}
         </div>
 
         <hr style="border: none; border-top: 1px solid var(--border-light); margin-bottom: 24px;">
@@ -103,15 +103,15 @@
             Storage:
           </div>
           <div style="display: flex; gap: 12px;">
-            <button type="button" class="v-storage-btn active" onclick="selectStorage(this, 844)" 
+            <button type="button" class="v-storage-btn active" onclick="selectStorage(this, {{ $product->price }})" 
               style="padding: 10px 24px; border-radius: var(--radius-sm); border: 2px solid var(--text-primary); background: #FFFFFF; font-size: 14px; font-weight: 700; color: var(--text-primary); cursor: pointer;">
               256GB
             </button>
-            <button type="button" class="v-storage-btn" onclick="selectStorage(this, 944)" 
+            <button type="button" class="v-storage-btn" onclick="selectStorage(this, {{ $product->price + 1000000 }})" 
               style="padding: 10px 24px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #FFFFFF; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer;">
               512GB
             </button>
-            <button type="button" class="v-storage-btn" onclick="selectStorage(this, 1144)" 
+            <button type="button" class="v-storage-btn" onclick="selectStorage(this, {{ $product->price + 2000000 }})" 
               style="padding: 10px 24px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #FFFFFF; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer;">
               1TB
             </button>
@@ -135,26 +135,26 @@
 
           <div id="tabDetailContent">
             <p style="font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 16px;">
-              Experience the beyond ordinary with the VOVOI Phone X Pro. Forged in aerospace-grade titanium, it delivers unprecedented durability in our lightest pro model ever.
+              {{ $product->description }}
             </p>
             <ul style="padding-left: 20px; font-size: 13px; line-height: 1.8; color: var(--text-secondary);">
-              <li>A17 Pro chip for next-level performance</li>
-              <li>48MP Main camera with advanced computational photography</li>
-              <li>Always-On display with ProMotion technology</li>
-              <li>USB-C with USB 3 speeds</li>
+              <li>Serial Produk: VOVOI-{{ str_pad($product->id, 4, '0', STR_PAD_LEFT) }}</li>
+              <li>Garansi Resmi 1 Tahun VOVOI Indonesia</li>
+              <li>Produk 100% Original & Terverifikasi</li>
+              <li>Pengiriman Cepat & Proteksi Asuransi Penuh</li>
             </ul>
           </div>
 
           <div id="tabSpecContent" style="display: none;">
             <div style="display: grid; grid-template-columns: 140px 1fr; gap: 8px; font-size: 13px; color: var(--text-secondary);">
-              <span style="font-weight: 600; color: var(--text-primary);">Dimensions:</span>
-              <span>146.6 x 70.6 x 8.25 mm</span>
-              <span style="font-weight: 600; color: var(--text-primary);">Weight:</span>
-              <span>187 grams</span>
-              <span style="font-weight: 600; color: var(--text-primary);">Display:</span>
-              <span>6.1-inch Super Retina XDR OLED</span>
-              <span style="font-weight: 600; color: var(--text-primary);">Water Resistance:</span>
-              <span>IP68 (6 meters up to 30 mins)</span>
+              <span style="font-weight: 600; color: var(--text-primary);">Product ID:</span>
+              <span>VOVOI-{{ str_pad($product->id, 4, '0', STR_PAD_LEFT) }}</span>
+              <span style="font-weight: 600; color: var(--text-primary);">Product Name:</span>
+              <span>{{ $product->name }}</span>
+              <span style="font-weight: 600; color: var(--text-primary);">Price:</span>
+              <span>Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+              <span style="font-weight: 600; color: var(--text-primary);">Status:</span>
+              <span>Tersedia (Ready Stock)</span>
             </div>
           </div>
         </div>
@@ -177,7 +177,7 @@
         <!-- Subtotal -->
         <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px;">
           <span style="font-size: 13px; color: var(--text-secondary);">Subtotal</span>
-          <span id="subtotalDisplay" style="font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">$844</span>
+          <span id="subtotalDisplay" style="font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
         </div>
 
         <!-- Buttons -->
@@ -223,11 +223,11 @@
             <rect x="3" y="14" width="7" height="7"></rect>
           </svg>
           <span class="v-tag-mono" style="background: #E2E8F0; color: #475569;">
-            O2O_READY
+            VOVOI-{{ str_pad($product->id, 4, '0', STR_PAD_LEFT) }}
           </span>
         </div>
         <div>
-          <h3>Serial Tag Tracking</h3>
+          <h3>Serial Tag: {{ $product->name }}</h3>
           <p>
             Verify authenticity instantly. Every VOVOI product carries a cryptographic tag synchronizing physical ownership with our immutable ledger.
           </p>
@@ -267,7 +267,7 @@
 
 @section('extra_js')
 <script>
-  let basePrice = 844;
+  let basePrice = {{ $product->price }};
   let currentQty = 1;
 
   function switchThumb(btn, imgSrc) {
@@ -307,8 +307,8 @@
 
   function updatePrice() {
     const total = basePrice * currentQty;
-    document.getElementById('productPriceDisplay').innerText = '$' + basePrice;
-    document.getElementById('subtotalDisplay').innerText = '$' + total.toLocaleString();
+    document.getElementById('productPriceDisplay').innerText = 'Rp ' + Number(basePrice).toLocaleString('id-ID');
+    document.getElementById('subtotalDisplay').innerText = 'Rp ' + Number(total).toLocaleString('id-ID');
   }
 
   function switchTab(tab) {

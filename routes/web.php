@@ -11,9 +11,7 @@ Route::get('/landing', function () {
     return view('landing');
 });
 
-Route::get('/detail/{id}', [App\Http\Controllers\ProductController::class,
-'show']);
-
+Route::get('/detail/{id}', [ProductController::class, 'show'])->name('product.detail');
 
 Route::get('/checkout', function () {
     return view('checkout');

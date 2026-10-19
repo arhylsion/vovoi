@@ -8,6 +8,7 @@
   'serial' => 'SM-8829-A',
   'url' => '/detail',
   'inStock' => true,
+  'buttonText' => 'Lihat Detail',
 ])
 
 <article class="v-product-card">
@@ -52,7 +53,7 @@
 
     @if($inStock)
       <a href="{{ $url }}" class="v-btn v-btn-primary v-btn-sm">
-        View
+        {{ $buttonText }}
       </a>
     @else
       <button type="button" class="v-btn v-btn-secondary v-btn-sm" style="opacity: 0.85;">

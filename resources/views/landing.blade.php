@@ -108,7 +108,7 @@
           <a href="/checkout" class="v-btn v-btn-primary v-btn-block">
             Add to Cart
           </a>
-          <a href="/detail" class="v-btn v-btn-secondary v-btn-block">
+          <a href="/detail/4" class="v-btn v-btn-secondary v-btn-block">
             Reserve in Store (O2O)
           </a>
         </div>
