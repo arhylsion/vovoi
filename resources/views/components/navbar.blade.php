@@ -26,7 +26,7 @@
       </a>
 
       <!-- Cart -->
-      <a href="/checkout" class="v-icon-btn" aria-label="Shopping Cart">
+      <a href="/keranjang" class="v-icon-btn" aria-label="Shopping Cart" title="Keranjang Belanja">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="9" cy="21" r="1"></circle>
           <circle cx="20" cy="21" r="1"></circle>

@@ -1,190 +1,143 @@
 @extends('layouts.master')
 
-@section('title', 'Checkout - VOVOI')
+@section('title', 'Checkout Pesanan - ' . $product->name . ' - VOVOI')
 
 @section('konten_utama')
-<section style="padding: 40px 0 80px;">
+<section style="padding: 32px 0 80px; background: #FBFBFC;">
   <div class="v-container">
     
-    <!-- Top Header -->
-    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 40px;">
-      <h1 style="font-size: 36px; font-weight: 800; letter-spacing: -0.04em;">Checkout</h1>
-      <a href="/katalog" style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">
-        Continue Shopping &rarr;
-      </a>
+    <!-- 1. Navigasi Breadcrumb Checkout -->
+    <nav style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono, monospace); font-size: 13px; color: var(--text-muted, #666); margin-bottom: 28px;">
+      <a href="/" style="color: #0B5ED7; text-decoration: none; font-weight: 500;">Katalog Utama</a>
+      <span style="color: #999;">/</span>
+      <a href="/detail/{{ $product->id }}" style="color: #0B5ED7; text-decoration: none; font-weight: 500;">{{ $product->name }}</a>
+      <span style="color: #999;">/</span>
+      <span style="color: #111; font-weight: 700;">Checkout Pesanan</span>
+    </nav>
+
+    <div style="margin-bottom: 32px;">
+      <h1 style="font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 8px 0; color: #111;">
+        Formulir Pengiriman &amp; Pembayaran
+      </h1>
+      <p style="font-size: 14px; color: #666; margin: 0;">
+        Lengkapi detail penerima dan pilih ekspedisi kurir untuk menyelesaikan pesanan Anda.
+      </p>
     </div>
 
-    <!-- Main 2-Column Grid -->
-    <div style="display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start;">
+    <!-- Main Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 380px; gap: 36px; align-items: start;">
       
-      <!-- Left Column: Cart, Fulfillment method, Shipping Form -->
-      <div>
-        
-        <!-- 1. Your Cart Section -->
-        <div style="margin-bottom: 40px;">
-          <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Your Cart</h2>
-          
-          <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px; display: flex; gap: 24px; align-items: center; position: relative;">
-            <div style="width: 88px; height: 88px; background: #F8F9FA; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; padding: 8px; flex-shrink: 0;">
-              <img src="{{ asset('assets/images/zen2-phone.svg') }}" alt="VOVOI Zen 2" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-            </div>
+      <!-- KOLOM KIRI: FORMULIR INPUT DATA PEMBELI -->
+      <div style="background-color: #FFFFFF; padding: 32px; border-radius: 12px; border: 1px solid var(--border-light, #E2E8F0); box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+        <h2 style="font-size: 20px; font-weight: 700; margin-top: 0; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid #F1F5F9; color: #111;">
+          Data Pengiriman Penerima
+        </h2>
 
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
-                <h3 style="font-size: 18px; font-weight: 700;">VOVOI Zen 2</h3>
-                <span style="font-size: 16px; font-weight: 700;">$999.00</span>
-              </div>
-              <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">256GB, Obsidian Black</p>
+        <!-- PENTING: Gunakan method="POST" dan arahkan action ke "/checkout/proses" -->
+        <form id="checkoutForm" action="/checkout/proses" method="POST">
+          <!-- WAJIB ADA: Token pengaman CSRF Laravel -->
+          @csrf
 
-              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-                <!-- Quantity selector -->
-                <div class="v-qty-selector">
-                  <button type="button" class="v-qty-btn" onclick="updateCheckoutQty(-1)">&minus;</button>
-                  <span id="checkoutQty" class="v-qty-val">1</span>
-                  <button type="button" class="v-qty-btn" onclick="updateCheckoutQty(1)">&#43;</button>
-                </div>
+          <!-- INPUT TERSEMBUNYI: Mengirimkan ID Produk yang sedang dibeli ke Controller -->
+          <input type="hidden" name="product_id" value="{{ $product->id }}">
 
-                <!-- Allocated Serial Badge -->
-                <span class="v-tag-mono" style="background: #F1F5F9; color: #475569; font-size: 10px;">
-                  <span class="v-dot-indicator green"></span>
-                  ALLOCATED: SN-9284-AX
-                </span>
-              </div>
-            </div>
+          <div style="margin-bottom: 20px;">
+            <label style="font-weight: 600; display: block; margin-bottom: 8px; font-size: 14px; color: #222;">
+              Nama Lengkap Penerima: <span style="color: #E63946;">*</span>
+            </label>
+            <input type="text" name="customer_name" placeholder="Contoh: Budi Santoso" 
+              style="width: 100%; box-sizing: border-box; padding: 12px 16px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;" 
+              required>
           </div>
-        </div>
 
-        <!-- 2. Fulfillment Method -->
-        <div style="margin-bottom: 40px;">
-          <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">
-            How would you like to get your order?
-          </h2>
+          <div style="margin-bottom: 20px;">
+            <label style="font-weight: 600; display: block; margin-bottom: 8px; font-size: 14px; color: #222;">
+              Nomor WhatsApp / HP Aktif: <span style="color: #E63946;">*</span>
+            </label>
+            <input type="text" name="customer_phone" placeholder="Contoh: 081234567890" 
+              style="width: 100%; box-sizing: border-box; padding: 12px 16px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;" 
+              required>
+          </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div style="margin-bottom: 20px;">
+            <label style="font-weight: 600; display: block; margin-bottom: 8px; font-size: 14px; color: #222;">
+              Alamat Lengkap Pengiriman: <span style="color: #E63946;">*</span>
+            </label>
+            <textarea name="customer_address" rows="3" placeholder="Tuliskan Nama Jalan, RT/RW, Kecamatan, dan Kota/Kabupaten..." 
+              style="width: 100%; box-sizing: border-box; padding: 12px 16px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 14px; outline: none; font-family: inherit; line-height: 1.5; resize: vertical;" 
+              required></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 28px;">
+            <div>
+              <label style="font-weight: 600; display: block; margin-bottom: 8px; font-size: 14px; color: #222;">
+                Pilih Ekspedisi Kurir: <span style="color: #E63946;">*</span>
+              </label>
+              <select id="courierSelect" name="courier" onchange="updateLiveCalculation()" 
+                style="width: 100%; box-sizing: border-box; padding: 12px 16px; border: 1px solid #CBD5E1; border-radius: 8px; background: white; font-size: 14px; outline: none; cursor: pointer;" 
+                required>
+                <option value="JNE Reguler" data-cost="15000">JNE Reguler (Ongkir Rp 15.000)</option>
+                <option value="J&T Express" data-cost="20000">J&T Express (Ongkir Rp 20.000)</option>
+                <option value="SiCepat BEST" data-cost="25000">SiCepat BEST (Ongkir Rp 25.000)</option>
+              </select>
+            </div>
             
-            <!-- Option: Delivery (Selected) -->
-            <label id="deliveryCard" style="border: 2px solid var(--text-primary); border-radius: var(--radius-lg); padding: 20px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; background: #FFFFFF; transition: all var(--transition-fast);">
-              <input type="radio" name="fulfillment" value="delivery" checked style="display: none;" onchange="toggleFulfillment('delivery')">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="1" y="3" width="15" height="13"></rect>
-                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
-                </svg>
-                <span style="font-size: 15px; font-weight: 700;">Delivery</span>
-              </div>
-              <span style="font-size: 12px; color: var(--text-secondary);">Direct to your home</span>
-            </label>
-
-            <!-- Option: Pickup -->
-            <label id="pickupCard" style="border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 20px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; background: #FFFFFF; transition: all var(--transition-fast);">
-              <input type="radio" name="fulfillment" value="pickup" style="display: none;" onchange="toggleFulfillment('pickup')">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <span style="font-size: 15px; font-weight: 700;">Pickup</span>
-              </div>
-              <span style="font-size: 12px; color: var(--text-secondary);">Collect at retail store</span>
-            </label>
-
+            <div>
+              <label style="font-weight: 600; display: block; margin-bottom: 8px; font-size: 14px; color: #222;">
+                Jumlah Beli (Qty): <span style="color: #E63946;">*</span>
+              </label>
+              <input type="number" id="qtyInput" name="quantity" value="1" min="1" max="99" onchange="updateLiveCalculation()" onkeyup="updateLiveCalculation()" 
+                style="width: 100%; box-sizing: border-box; padding: 12px 16px; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 14px; outline: none;" 
+                required>
+            </div>
           </div>
-        </div>
 
-        <!-- 3. Shipping Details Form -->
-        <div>
-          <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">Shipping Details</h2>
-
-          <form id="checkoutForm" action="/berhasil" method="GET" style="display: flex; flex-direction: column; gap: 16px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-              <div class="v-form-group" style="margin: 0;">
-                <label class="v-form-label">First Name</label>
-                <input type="text" class="v-input" name="first_name" value="Joni" required>
-              </div>
-
-              <div class="v-form-group" style="margin: 0;">
-                <label class="v-form-label">Last Name</label>
-                <input type="text" class="v-input" name="last_name" value="Doe" required>
-              </div>
-            </div>
-
-            <div class="v-form-group" style="margin: 0;">
-              <label class="v-form-label">Street Address</label>
-              <input type="text" class="v-input" name="address" value="Jl. Ciriung Jaya no 441" required>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-              <div class="v-form-group" style="margin: 0;">
-                <label class="v-form-label">City</label>
-                <input type="text" class="v-input" name="city" value="Cibinong" required>
-              </div>
-
-              <div class="v-form-group" style="margin: 0;">
-                <label class="v-form-label">Zip Code</label>
-                <input type="text" class="v-input" name="zip" value="16996" required>
-              </div>
-            </div>
-          </form>
-        </div>
-
+          <button type="submit" 
+            style="background-color: #FFC107; color: #000000; padding: 16px 24px; width: 100%; border: none; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);">
+            Konfirmasi &amp; Buat Pesanan Sekarang
+          </button>
+        </form>
       </div>
 
-      <!-- Right Column: Order Summary & Digital Warranty Preview -->
-      <div style="display: flex; flex-direction: column; gap: 24px; position: sticky; top: 96px;">
+      <!-- KOLOM KANAN: RINGKASAN PRODUK YANG DIPILIH DARI P6 -->
+      <div style="background-color: #FFFFFF; padding: 28px; border-radius: 12px; border: 1px solid var(--border-light, #E2E8F0); box-shadow: 0 2px 10px rgba(0,0,0,0.03); position: sticky; top: 96px;">
+        <h3 style="margin-top: 0; border-bottom: 1px solid #F1F5F9; padding-bottom: 12px; font-size: 18px; font-weight: 700; color: #111;">
+          Ringkasan Pesanan
+        </h3>
         
-        <!-- Summary Box -->
-        <div style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm);">
-          <h2 style="font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 24px;">
-            Summary
-          </h2>
+        @if($product->image)
+        <div style="width: 100%; height: 180px; background: #F8F9FA; border-radius: 8px; border: 1px solid #F1F5F9; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 16px; padding: 12px;">
+          <img src="{{ asset('assets/images/' . $product->image) }}" alt="{{ $product->name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+        </div>
+        @endif
 
-          <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px; margin-bottom: 20px;">
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: var(--text-secondary);">Subtotal</span>
-              <span id="summarySubtotal" style="font-weight: 600;">$999.00</span>
-            </div>
-            
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: var(--text-secondary);">Shipping</span>
-              <span style="font-weight: 600; color: #059669;">Free</span>
-            </div>
+        <h3 style="margin: 0 0 6px 0; color: #111; font-size: 18px; font-weight: 700;">{{ $product->name }}</h3>
+        
+        <p style="color: #64748B; font-size: 13px; margin: 0 0 4px 0;">Harga Satuan Produk:</p>
+        <h2 style="color: #E63946; margin: 0 0 16px 0; font-size: 24px; font-weight: 800;">
+          Rp {{ number_format($product->price, 0, ',', '.') }}
+        </h2>
 
-            <div style="display: flex; justify-content: space-between;">
-              <span style="color: var(--text-secondary);">Estimated Tax</span>
-              <span id="summaryTax" style="font-weight: 600;">$72.43</span>
-            </div>
+        <!-- Live Estimate Breakdown -->
+        <div style="background: #F8FAFC; border-radius: 8px; padding: 14px; margin-bottom: 16px; font-size: 13px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #64748B;">
+            <span>Subtotal (<span id="calcQty">1</span> barang):</span>
+            <span id="calcSubtotal" style="font-weight: 600; color: #1E293B;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
           </div>
-
-          <hr style="border: none; border-top: 1px solid var(--border-light); margin-bottom: 20px;">
-
-          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px;">
-            <span style="font-size: 15px; font-weight: 700;">Total</span>
-            <span id="summaryTotal" style="font-size: 26px; font-weight: 800; letter-spacing: -0.03em;">$1,071.43</span>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #64748B;">
+            <span>Ongkos Kirim:</span>
+            <span id="calcShipping" style="font-weight: 600; color: #1E293B;">Rp 15.000</span>
           </div>
-
-          <button type="button" class="v-btn v-btn-primary v-btn-block v-btn-lg" onclick="document.getElementById('checkoutForm').submit();" style="margin-bottom: 16px;">
-            Place Order
-          </button>
-
-          <div style="text-align: center; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; justify-content: center; gap: 6px;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            Secure SSL Encrypted Checkout
+          <hr style="margin: 10px 0; border: 0; border-top: 1px dashed #CBD5E1;">
+          <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: #0F172A;">
+            <span>Estimasi Total:</span>
+            <span id="calcTotal" style="color: #E63946; font-size: 16px;">Rp {{ number_format($product->price + 15000, 0, ',', '.') }}</span>
           </div>
         </div>
 
-        <!-- Warranty Box Reusable Component -->
-        <x-warranty-card 
-          device="VOVOI Zen 2"
-          serial="SN-9284-AX"
-          coverage="1 Year Standard"
-          :showNote="true"
-        />
-
+        <p style="font-size: 12px; color: #64748B; line-height: 1.5; margin: 0;">
+          *Total tagihan akhir (Harga Produk dikali Jumlah Beli ditambah Ongkos Kirim) akan dihitung secara otomatis oleh sistem pada halaman Invoice setelah Anda menekan tombol Konfirmasi.
+        </p>
       </div>
 
     </div>
@@ -195,34 +148,29 @@
 
 @section('extra_js')
 <script>
-  let checkoutQty = 1;
-  const unitPrice = 999.00;
-  const taxRate = 0.0725;
+  const basePrice = {{ $product->price }};
 
-  function updateCheckoutQty(delta) {
-    checkoutQty = Math.max(1, checkoutQty + delta);
-    document.getElementById('checkoutQty').innerText = checkoutQty;
+  function updateLiveCalculation() {
+    const qtyInput = document.getElementById('qtyInput');
+    const courierSelect = document.getElementById('courierSelect');
+    
+    let qty = parseInt(qtyInput.value) || 1;
+    if (qty < 1) qty = 1;
 
-    const subtotal = unitPrice * checkoutQty;
-    const tax = subtotal * taxRate;
-    const total = subtotal + tax;
-
-    document.getElementById('summarySubtotal').innerText = '$' + subtotal.toFixed(2);
-    document.getElementById('summaryTax').innerText = '$' + tax.toFixed(2);
-    document.getElementById('summaryTotal').innerText = '$' + total.toFixed(2);
-  }
-
-  function toggleFulfillment(mode) {
-    const delivery = document.getElementById('deliveryCard');
-    const pickup = document.getElementById('pickupCard');
-
-    if (mode === 'delivery') {
-      delivery.style.border = '2px solid var(--text-primary)';
-      pickup.style.border = '1px solid var(--border-light)';
-    } else {
-      pickup.style.border = '2px solid var(--text-primary)';
-      delivery.style.border = '1px solid var(--border-light)';
+    let shippingCost = 15000;
+    if (courierSelect.value === 'J&T Express') {
+      shippingCost = 20000;
+    } else if (courierSelect.value === 'SiCepat BEST') {
+      shippingCost = 25000;
     }
+
+    const subtotal = basePrice * qty;
+    const total = subtotal + shippingCost;
+
+    document.getElementById('calcQty').innerText = qty;
+    document.getElementById('calcSubtotal').innerText = 'Rp ' + subtotal.toLocaleString('id-ID');
+    document.getElementById('calcShipping').innerText = 'Rp ' + shippingCost.toLocaleString('id-ID');
+    document.getElementById('calcTotal').innerText = 'Rp ' + total.toLocaleString('id-ID');
   }
 </script>
 @endsection

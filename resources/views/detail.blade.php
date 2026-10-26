@@ -182,10 +182,10 @@
 
         <!-- Buttons -->
         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-          <button type="button" class="v-btn v-btn-primary v-btn-block" onclick="addToCartNotification()">
-            + Keranjang
-          </button>
-          <a href="/checkout" class="v-btn v-btn-secondary v-btn-block">
+          <a href="/keranjang?add={{ $product->id }}" class="v-btn v-btn-primary v-btn-block" style="text-align: center; text-decoration: none;">
+            + Masukkan Keranjang
+          </a>
+          <a href="/checkout/{{ $product->id }}" class="v-btn v-btn-secondary v-btn-block" style="text-align: center; text-decoration: none;">
             Beli Langsung
           </a>
         </div>
