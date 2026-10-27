@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,6 @@ Route::get('/keranjang', [ProductController::class, 'cart'])->name('cart');
 Route::get('/cart', [ProductController::class, 'cart']);
 Route::post('/keranjang/tambah', [ProductController::class, 'addToCart'])->name('cart.add');
 Route::get('/keranjang/hapus/{id}', [ProductController::class, 'removeFromCart'])->name('cart.remove');
+
+Route::get('/admin/transactions', [AdminController::class, 'transactions']);
+Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus']);
