@@ -46,3 +46,8 @@ Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateS
 Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
 Route::get('/admin/products/create', [AdminController::class, 'createProduct'])->name('admin.products.create');
 Route::post('/admin/products/store', [AdminController::class, 'storeProduct'])->name('admin.products.store');
+
+// Materi P10
+Route::get('admin/products/{id}/edit', [AdminController::class, 'editProduct'])->name('admin.product.edit');
+Route::post('admin/products/{id}/update', [AdminController::class, 'updateProduct'])->name('admin.product.update');
+Route::post('admin/products/{id}/delete', [AdminController::class, 'deleteProduct'])->name('admin.product.delete');
