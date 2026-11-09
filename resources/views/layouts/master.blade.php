@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'VOVOI - Beyond Ordinary')</title>
     <meta name="description" content="Explore our curated collection of premium electronics, synced in real-time across all locations.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/vovoi.css') }}">
     @yield('extra_css')
 </head>
-<body>
+<body style="font-family: 'Plus Jakarta Sans', sans-serif;">
 
     <x-navbar />
 

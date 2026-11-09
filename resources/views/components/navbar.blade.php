@@ -14,6 +14,9 @@
       <li>
         <a href="/katalog" class="v-nav-link">Support</a>
       </li>
+      <li>
+        <a href="/admin/products" class="v-nav-link" style="color: #0B5ED7; font-weight: 700;">⚙️ Seller Center</a>
+      </li>
     </ul>
 
     <div class="v-nav-actions">

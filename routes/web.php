@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+
+// =========================================================
+// JALUR FRONT-STORE (SISI PEMBELI: P5, P6, P7)
+// =========================================================
 
 // 1. Jalur Beranda Katalog (Dari P5)
 Route::get('/', [ProductController::class, 'index'])->name('home');
@@ -28,3 +33,16 @@ Route::get('/keranjang', [ProductController::class, 'cart'])->name('cart');
 Route::get('/cart', [ProductController::class, 'cart']);
 Route::post('/keranjang/tambah', [ProductController::class, 'addToCart'])->name('cart.add');
 Route::get('/keranjang/hapus/{id}', [ProductController::class, 'removeFromCart'])->name('cart.remove');
+
+// =========================================================
+// JALUR BACK-OFFICE / SELLER CENTER (SISI ADMIN: P8 & P9)
+// =========================================================
+
+// Materi P8: Manajemen Pesanan Masuk
+Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
+Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus'])->name('admin.transactions.status');
+
+// Materi P9: Manajemen Katalog Produk & Upload Gambar
+Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
+Route::get('/admin/products/create', [AdminController::class, 'createProduct'])->name('admin.products.create');
+Route::post('/admin/products/store', [AdminController::class, 'storeProduct'])->name('admin.products.store');
