@@ -8,7 +8,7 @@
       <a href="#" class="v-footer-link">Privacy Policy</a>
       <a href="#" class="v-footer-link">Terms of Service</a>
       <a href="#" class="v-footer-link">Store Locator</a>
-      <a href="#" class="v-footer-link">Contact Support</a>
+      <a href="/admin/transactions" class="v-footer-link" style="color: var(--text-primary); font-weight: 600;">Admin Console &nearr;</a>
     </div>
 
     <div class="v-footer-copy">
