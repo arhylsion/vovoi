@@ -108,5 +108,63 @@ class AdminController extends Controller
             'Produk "' . $request->name . '" berhasil ditambahkan dan langsung tayang di etalase toko!'
         );
     }
-}
 
+    public function editProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('admin.edit_product', compact('product'));
+    }
+
+    public function updateProduct(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:150',
+            'price' => 'required|numeric|min:100',
+            'description' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $imageName = $product->image;
+
+        if ($request->hasFile('image')) {
+            if ($product->image && file_exists(public_path('assets/images/' . $product->image))) {
+                unlink(public_path('assets/images/' . $product->image));
+            }
+
+            $file = $request->file('image');
+            $imageName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $file->move(public_path('assets/images'), $imageName);
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'description' => $request->description,
+            'image' => $imageName,
+        ]);
+
+        return redirect('/admin/products')->with(
+            'success',
+            'Perubahan pada produk "' . $product->name . '" berhasil disimpan!'
+        );
+    }
+
+    public function deleteProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $deletedName = $product->name;
+
+        if ($product->image && file_exists(public_path('assets/images/' . $product->image))) {
+            unlink(public_path('assets/images/' . $product->image));
+        }
+
+        $product->delete();
+
+        return redirect('/admin/products')->with(
+            'success',
+            'Produk "' . $product->name . '" berhasil dihapus dari etalase.'
+        );
+    }
+}

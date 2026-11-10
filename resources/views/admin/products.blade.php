@@ -30,7 +30,7 @@
                     <th style="padding: 14px 20px; font-weight: 600;">Info Produk</th>
                     <th style="padding: 14px 20px; font-weight: 600;">Harga Satuan</th>
                     <th style="padding: 14px 20px; font-weight: 600;">Tanggal Ditambahkan</th>
-                    <th style="padding: 14px 20px; font-weight: 600; text-align: right;">Pratinjau</th>
+                    <th style="padding: 14px 20px; font-weight: 600; text-align: right;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,11 +67,27 @@
                             {{ $product->created_at ? $product->created_at->format('d M Y, H:i') : '-' }}
                         </td>
 
-                        <!-- Kolom 5: Tautan Cek Halaman Detail -->
+                        <!-- Kolom 5: Tautan Cek Halaman Detail & Aksi -->
                         <td style="padding: 16px 20px; vertical-align: middle; text-align: right;">
-                            <a href="/detail/{{ $product->id }}" target="_blank" style="color: #0B5ED7; text-decoration: none; font-weight: 600; font-size: 13px; background-color: #eff6ff; padding: 7px 12px; border-radius: 6px; border: 1px solid #bfdbfe;">
-                                Lihat di Toko &nearr;
-                            </a>
+                            <div style="display: inline-flex; gap: 8px; align-items: center;">
+                                <!-- Tombol Lihat di Etalase -->
+                                <a href="/detail/{{ $product->id }}" target="_blank" style="color: #475569; text-decoration: none; font-weight: 600; font-size: 13px; background-color: #f8fafc; padding: 7px 12px; border-radius: 6px; border: 1px solid #cbd5e1;">
+                                    Lihat &nearr;
+                                </a>
+
+                                <!-- Tombol Edit Produk -->
+                                <a href="/admin/products/{{ $product->id }}/edit" style="color: #0B5ED7; text-decoration: none; font-weight: 600; font-size: 13px; background-color: #eff6ff; padding: 7px 14px; border-radius: 6px; border: 1px solid #bfdbfe;">
+                                    Edit
+                                </a>
+
+                                <!-- Form & Tombol Hapus Produk dengan Konfirmasi -->
+                                <form action="/admin/products/{{ $product->id }}/delete" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk {{ $product->name }} secara permanen?');" style="margin: 0;">
+                                    @csrf
+                                    <button type="submit" style="color: #dc2626; background-color: #fef2f2; border: 1px solid #fecaca; padding: 7px 12px; border-radius: 6px; font-weight: 600; font-size: 13px; font-family: inherit; cursor: pointer;">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @empty
@@ -85,4 +101,3 @@
         </table>
     </div>
 @endsection
-
