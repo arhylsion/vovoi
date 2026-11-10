@@ -10,13 +10,33 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    // FUNGSI 1: Menampilkan seluruh produk di Katalog (P5)
-    public function index(): View
+    // FUNGSI 1 (MODIFIKASI P11): Katalog Dinamis dengan Fitur Search & Filter Harga
+    public function index(Request $request): View
     {
-        // 1. Manajer menarik seluruh data dari Gudang
-        $products = Product::all();
+        // A. Buka kerangka Query Builder Produk
+        $query = Product::query();
 
-        // 2. Manajer melempar paket data tersebut ke halaman 'katalog'
+        // B. Logika Pencarian (Jika pengunjung mengetik kata kunci di Search Bar)
+        if ($request->filled('search')) {
+            $keyword = $request->search;
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('description', 'LIKE', '%' . $keyword . '%');
+            });
+        }
+
+        // C. Logika Pengurutan / Sorting Harga & Waktu
+        if ($request->sort == 'termurah') {
+            $query->orderBy('price', 'asc'); // Urut dari harga paling rendah
+        } elseif ($request->sort == 'termahal') {
+            $query->orderBy('price', 'desc'); // Urut dari harga paling tinggi
+        } else {
+            $query->latest(); // Default: Urut dari produk yang paling baru diunggah
+        }
+
+        // D. Eksekusi pencarian dan kirim hasilnya ke halaman katalog
+        $products = $query->get();
+
         return view('katalog', compact('products'));
     }
 
