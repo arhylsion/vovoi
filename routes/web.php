@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,16 +39,22 @@ Route::get('/keranjang/hapus/{id}', [ProductController::class, 'removeFromCart']
 // JALUR BACK-OFFICE / SELLER CENTER (SISI ADMIN: P8 & P9)
 // =========================================================
 
-// Materi P8: Manajemen Pesanan Masuk
-Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
-Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus'])->name('admin.transactions.status');
+Route::get('/login', [AuthController::class, 'showlogin'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate']);
+Route::post('/logout', [AuthController::class, 'logout']);
 
-// Materi P9: Manajemen Katalog Produk & Upload Gambar
-Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
-Route::get('/admin/products/create', [AdminController::class, 'createProduct'])->name('admin.products.create');
-Route::post('/admin/products/store', [AdminController::class, 'storeProduct'])->name('admin.products.store');
+Route::middleware(['auth'])->group(function () {
+    // Materi P8: Manajemen Pesanan Masuk
+    Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
+    Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus'])->name('admin.transactions.status');
 
-// Materi P10
-Route::get('admin/products/{id}/edit', [AdminController::class, 'editProduct'])->name('admin.product.edit');
-Route::post('admin/products/{id}/update', [AdminController::class, 'updateProduct'])->name('admin.product.update');
-Route::post('admin/products/{id}/delete', [AdminController::class, 'deleteProduct'])->name('admin.product.delete');
+    // Materi P9: Manajemen Katalog Produk & Upload Gambar
+    Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
+    Route::get('/admin/products/create', [AdminController::class, 'createProduct'])->name('admin.products.create');
+    Route::post('/admin/products/store', [AdminController::class, 'storeProduct'])->name('admin.products.store');
+
+    // Materi P10
+    Route::get('admin/products/{id}/edit', [AdminController::class, 'editProduct'])->name('admin.product.edit');
+    Route::post('admin/products/{id}/update', [AdminController::class, 'updateProduct'])->name('admin.product.update');
+    Route::post('admin/products/{id}/delete', [AdminController::class, 'deleteProduct'])->name('admin.product.delete');
+});
