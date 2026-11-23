@@ -14,7 +14,8 @@
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system,
+                BlinkMacSystemFont, sans-serif;
             margin: 0;
             background-color: #f8fafc;
             color: #0f172a;
@@ -155,7 +156,8 @@
     </main>
 
     <footer class="footer-admin">
-        Portal Seller Center &bull; Kompetensi Keahlian Rekayasa Perangkat Lunak - SMK Plus Pelita Nusantara
+        Portal Seller Center &bull; Kompetensi Keahlian Rekayasa Perangkat
+        Lunak - SMK Plus Pelita Nusantara
     </footer>
 
     @yield('extra_js')

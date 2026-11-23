@@ -273,7 +273,6 @@
             }
         }
     </style>
-    @yield('extra_css')
 </head>
 
 <body>
@@ -294,7 +293,6 @@
                 placeholder="Cari smartphone, spesifikasi, atau seri VOVOI..." class="header-search-input">
             <button type="submit" class="header-search-btn">Cari</button>
         </form>
-
         <nav class="store-nav">
             <a href="/" class="nav-item">Katalog Utama</a>
             <a href="/keranjang" class="nav-item">
@@ -337,10 +335,9 @@
     </main>
 
     <footer class="store-footer">
-        &copy; 2026 VOVOI Official Store &bull; Rekayasa Perangkat Lunak - SMK Plus Pelita Nusantara Bogor
+        &copy; 2026 Official Store &bull; Rekayasa Perangkat Lunak - SMK
+        Plus Pelita Nusantara Bogor
     </footer>
-
-    @yield('extra_js')
 </body>
 
 </html>
