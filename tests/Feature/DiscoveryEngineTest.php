@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Product;
 use Tests\TestCase;
 
 class DiscoveryEngineTest extends TestCase
@@ -97,4 +96,3 @@ class DiscoveryEngineTest extends TestCase
         $response->assertSee('Tampilkan Semua Produk');
     }
 }
-

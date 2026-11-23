@@ -4,14 +4,33 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class AdminSellerCenterTest extends TestCase
 {
-    public function test_admin_products_page_loads_and_displays_seller_center(): void
+    protected function getAdminUser(): User
+    {
+        return User::firstOrCreate(
+            ['email' => 'admin@vovoi.com'],
+            ['name' => 'admin', 'password' => 'admin123', 'role' => 'admin']
+        );
+    }
+
+    public function test_unauthenticated_user_cannot_access_seller_center(): void
     {
         $response = $this->get('/admin/products');
+        $response->assertRedirect('/login');
+
+        $responseCreate = $this->get('/admin/products/create');
+        $responseCreate->assertRedirect('/login');
+    }
+
+    public function test_admin_products_page_loads_and_displays_seller_center(): void
+    {
+        $admin = $this->getAdminUser();
+        $response = $this->actingAs($admin)->get('/admin/products');
 
         $response->assertStatus(200);
         $response->assertSee('SELLER CENTER');
@@ -22,7 +41,8 @@ class AdminSellerCenterTest extends TestCase
 
     public function test_admin_create_product_page_loads_with_multipart_form(): void
     {
-        $response = $this->get('/admin/products/create');
+        $admin = $this->getAdminUser();
+        $response = $this->actingAs($admin)->get('/admin/products/create');
 
         $response->assertStatus(200);
         $response->assertSee('Tambah Produk Baru');
@@ -37,7 +57,10 @@ class AdminSellerCenterTest extends TestCase
 
     public function test_store_product_validation_rejects_empty_inputs(): void
     {
-        $response = $this->from('/admin/products/create')->post('/admin/products/store', []);
+        $admin = $this->getAdminUser();
+        $response = $this->actingAs($admin)
+            ->from('/admin/products/create')
+            ->post('/admin/products/store', []);
 
         $response->assertRedirect('/admin/products/create');
         $response->assertSessionHasErrors(['name', 'price', 'description', 'image']);
@@ -45,6 +68,7 @@ class AdminSellerCenterTest extends TestCase
 
     public function test_store_product_validation_rejects_non_image_files(): void
     {
+        $admin = $this->getAdminUser();
         $file = UploadedFile::fake()->create('document.pdf', 500, 'application/pdf');
 
         $payload = [
@@ -54,7 +78,9 @@ class AdminSellerCenterTest extends TestCase
             'image' => $file,
         ];
 
-        $response = $this->from('/admin/products/create')->post('/admin/products/store', $payload);
+        $response = $this->actingAs($admin)
+            ->from('/admin/products/create')
+            ->post('/admin/products/store', $payload);
 
         $response->assertRedirect('/admin/products/create');
         $response->assertSessionHasErrors(['image']);
@@ -62,6 +88,7 @@ class AdminSellerCenterTest extends TestCase
 
     public function test_store_product_validation_rejects_file_exceeding_2mb(): void
     {
+        $admin = $this->getAdminUser();
         // 3000 KB > 2048 KB
         $largeFile = UploadedFile::fake()->create('large_image.jpg', 3000, 'image/jpeg');
 
@@ -72,7 +99,9 @@ class AdminSellerCenterTest extends TestCase
             'image' => $largeFile,
         ];
 
-        $response = $this->from('/admin/products/create')->post('/admin/products/store', $payload);
+        $response = $this->actingAs($admin)
+            ->from('/admin/products/create')
+            ->post('/admin/products/store', $payload);
 
         $response->assertRedirect('/admin/products/create');
         $response->assertSessionHasErrors(['image']);
@@ -80,16 +109,18 @@ class AdminSellerCenterTest extends TestCase
 
     public function test_store_product_successfully_uploads_image_and_persists_to_database(): void
     {
+        $admin = $this->getAdminUser();
         $testImage = UploadedFile::fake()->image('asus_rog_strix.jpg', 600, 600);
 
         $payload = [
             'name' => 'Asus ROG Strix G16 RTX 4060',
             'price' => 24500000,
+            'stock' => 5,
             'description' => 'Garansi Resmi 2 Tahun. RAM 16GB DDR5, SSD 1TB NVMe, Intel Core i7 13650HX.',
             'image' => $testImage,
         ];
 
-        $response = $this->post('/admin/products/store', $payload);
+        $response = $this->actingAs($admin)->post('/admin/products/store', $payload);
 
         $response->assertRedirect('/admin/products');
         $response->assertSessionHas('success');
@@ -100,7 +131,7 @@ class AdminSellerCenterTest extends TestCase
         $this->assertStringContainsString('asus_rog_strix.jpg', $product->image);
 
         // Verify physical file exists in public/assets/images
-        $savedFilePath = public_path('assets/images/' . $product->image);
+        $savedFilePath = public_path('assets/images/'.$product->image);
         $this->assertFileExists($savedFilePath);
 
         // Cleanup uploaded test file
@@ -114,7 +145,8 @@ class AdminSellerCenterTest extends TestCase
 
     public function test_admin_transactions_page_loads_and_displays_aggregate_stats(): void
     {
-        $response = $this->get('/admin/transactions');
+        $admin = $this->getAdminUser();
+        $response = $this->actingAs($admin)->get('/admin/transactions');
 
         $response->assertStatus(200);
         $response->assertSee('TOTAL PRODUK DI ETALASE');
@@ -125,6 +157,7 @@ class AdminSellerCenterTest extends TestCase
 
     public function test_admin_can_update_transaction_status_and_flash_session(): void
     {
+        $admin = $this->getAdminUser();
         $transaction = Transaction::create([
             'invoice_code' => 'INV-2026-9999',
             'product_id' => 1,
@@ -140,9 +173,11 @@ class AdminSellerCenterTest extends TestCase
         ]);
 
         // Test update to Paid
-        $response = $this->from('/admin/transactions')->post('/admin/transactions/'.$transaction->id.'/status', [
-            'status' => 'Paid',
-        ]);
+        $response = $this->actingAs($admin)
+            ->from('/admin/transactions')
+            ->post('/admin/transactions/'.$transaction->id.'/status', [
+                'status' => 'Paid',
+            ]);
 
         $response->assertRedirect('/admin/transactions');
         $response->assertSessionHas('success');
@@ -153,10 +188,10 @@ class AdminSellerCenterTest extends TestCase
         // Test Invoice view updates dynamically to Paid
         $invoiceResponse = $this->get('/berhasil/'.$transaction->id);
         $invoiceResponse->assertStatus(200);
-        $invoiceResponse->assertSee('Paid (Pembayaran Lunas - Sedang Dikemas)');
+        $invoiceResponse->assertSee('Paid (Lunas - Sedang Dikemas)');
 
         // Test update to Shipped
-        $this->post('/admin/transactions/'.$transaction->id.'/status', [
+        $this->actingAs($admin)->post('/admin/transactions/'.$transaction->id.'/status', [
             'status' => 'Shipped',
         ]);
 
@@ -166,10 +201,9 @@ class AdminSellerCenterTest extends TestCase
         // Test Invoice view updates dynamically to Shipped
         $invoiceResponse2 = $this->get('/berhasil/'.$transaction->id);
         $invoiceResponse2->assertStatus(200);
-        $invoiceResponse2->assertSee('Shipped (Pesanan Sedang Dikirim Kurir)');
+        $invoiceResponse2->assertSee('Shipped (Pesanan Sedang Dikirim)');
 
         // Cleanup
         $transaction->delete();
     }
 }
-

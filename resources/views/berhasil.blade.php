@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Bukti Transaksi - ' . $transaction->invoice_code . ' - VOVOI')
+@section('title', 'E-Invoice ' . $transaction->invoice_code . ' - VOVOI')
 
 @section('extra_css')
 <style>
   .invoice-card {
     background: #FFFFFF;
     border: 1px solid var(--border-light, #E2E8F0);
-    border-radius: var(--radius-xl, 24px);
+    border-radius: 16px;
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
     padding: 40px;
     position: relative;
@@ -21,18 +21,18 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #0F172A 0%, #10B981 100%);
+    background: linear-gradient(90deg, #0B5ED7 0%, #10B981 100%);
   }
 
   .receipt-meta-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    background: var(--bg-secondary, #F8F9FA);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    background: #F8FAFC;
     border: 1px solid var(--border-light, #E2E8F0);
-    border-radius: var(--radius-md, 12px);
-    padding: 20px 24px;
-    margin-bottom: 28px;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
   }
 
   .receipt-detail-item {
@@ -42,7 +42,7 @@
   }
 
   .receipt-detail-label {
-    font-family: var(--font-mono, monospace);
+    font-family: monospace;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -52,7 +52,7 @@
 
   .receipt-detail-value {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-primary, #0F172A);
   }
 
@@ -62,20 +62,13 @@
     gap: 6px;
     background: #FFFFFF;
     border: 1px solid var(--border-medium, #CBD5E1);
-    border-radius: var(--radius-sm, 6px);
+    border-radius: 6px;
     padding: 3px 8px;
-    font-family: var(--font-mono, monospace);
+    font-family: monospace;
     font-size: 11px;
     font-weight: 600;
     color: var(--text-secondary, #64748B);
     cursor: pointer;
-    transition: all var(--transition-fast, 0.15s ease);
-  }
-
-  .copy-btn:hover {
-    border-color: var(--text-primary, #0F172A);
-    color: var(--text-primary, #0F172A);
-    background: var(--bg-tertiary, #F1F3F5);
   }
 
   .order-breakdown-table {
@@ -86,90 +79,120 @@
   }
 
   .order-breakdown-table td {
-    padding: 12px 0;
+    padding: 10px 0;
     border-bottom: 1px solid var(--border-light, #E2E8F0);
   }
 
-  .order-breakdown-table tr:last-child td {
-    border-bottom: none;
-  }
-
+  /* MEDIA PRINT: E-INVOICE CETAK BERSIH (FITUR INOVASI P12) */
   @media print {
-    .v-navbar, .v-footer, .no-print, .v-breadcrumb {
+    .store-header,
+    .store-footer,
+    .no-print,
+    .action-buttons-box,
+    .review-section-box,
+    .cancel-order-box,
+    nav,
+    button,
+    a.v-btn {
       display: none !important;
     }
+
     body {
       background: #FFFFFF !important;
+      color: #000000 !important;
+      padding: 0 !important;
     }
+
+    .store-main {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: 100% !important;
+    }
+
     .invoice-card {
       box-shadow: none !important;
-      border: 1px solid #CBD5E1 !important;
+      border: 1px solid #94A3B8 !important;
       padding: 24px !important;
-    }
-    section {
-      padding: 0 !important;
+      border-radius: 0 !important;
     }
   }
 </style>
 @endsection
 
 @section('konten_utama')
-<section style="padding: 40px 20px 80px; background: #FBFBFC; min-height: 85vh;">
-  <div class="v-container" style="max-width: 780px;">
+<section style="padding: 24px 0 80px;">
+  <div style="max-width: 820px; margin: 0 auto;">
 
     <!-- 1. Breadcrumb Navigation -->
-    <nav class="v-breadcrumb no-print" style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono, monospace); font-size: 12px; color: var(--text-muted, #94A3B8); margin-bottom: 28px;">
-      <a href="/" style="color: var(--text-secondary, #64748B); text-decoration: none;">Beranda</a>
+    <nav class="no-print" style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #64748b; margin-bottom: 24px;">
+      <a href="/" style="color: #0B5ED7; text-decoration: none; font-weight: 500;">Beranda</a>
       <span>&rsaquo;</span>
-      <a href="/katalog" style="color: var(--text-secondary, #64748B); text-decoration: none;">Katalog</a>
+      <a href="/katalog" style="color: #0B5ED7; text-decoration: none; font-weight: 500;">Katalog</a>
       <span>&rsaquo;</span>
-      <span style="color: var(--text-primary, #0F172A); font-weight: 700;">Invoice #{{ $transaction->invoice_code }}</span>
+      <span style="color: #0f172a; font-weight: 700;">E-Invoice #{{ $transaction->invoice_code }}</span>
     </nav>
 
+    <!-- Flash Alert -->
+    @if(session('success'))
+      <div class="no-print" style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; color: #065F46; font-size: 14px; font-weight: 600;">
+        ✅ {{ session('success') }}
+      </div>
+    @endif
+
+    @if(session('error'))
+      <div class="no-print" style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px; color: #991B1B; font-size: 14px; font-weight: 600;">
+        ⚠️ {{ session('error') }}
+      </div>
+    @endif
+
     <!-- 2. Header Status Banner -->
-    <div style="text-align: center; margin-bottom: 32px;">
-      <div style="margin-bottom: 14px;">
+    <div class="no-print" style="text-align: center; margin-bottom: 28px;">
+      <div style="margin-bottom: 10px;">
         <span class="v-tag-mono green">
           <span class="v-dot-indicator green"></span>
-          TRANSACTION VERIFIED • ORDER DISPATCH QUEUED
+          TRANSACTION VERIFIED &bull; OFFICIAL E-INVOICE
         </span>
       </div>
 
-      <h1 style="font-size: clamp(26px, 4vw, 34px); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 10px 0; color: var(--text-primary, #0F172A);">
-        Transaksi Berhasil Tercatat
+      <h1 style="font-size: 26px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 8px 0; color: #0F172A;">
+        Transaksi Tercatat di Sistem VOVOI
       </h1>
 
-      <p style="font-size: 15px; color: var(--text-secondary, #64748B); margin: 0; line-height: 1.6;">
-        Terima kasih, <strong>{{ $transaction->customer_name }}</strong>. Pesanan Anda telah tersinkronisasi dengan sistem gudang pusat VOVOI.
+      <p style="font-size: 14px; color: #64748B; margin: 0; line-height: 1.5;">
+        Terima kasih, <strong>{{ $transaction->customer_name }}</strong>. Pesanan Anda telah tersimpan dan siap diproses oleh gudang resmi VOVOI.
       </p>
     </div>
 
-    <!-- 3. Digital Invoice Card (VOVOI Key Design) -->
-    <div class="invoice-card">
+    <!-- 3. Digital Invoice Card (E-Invoice Cetak) -->
+    <div class="invoice-card" id="printableInvoice">
 
       <!-- Top Header: Logo & Status Badge -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; padding-bottom: 24px; border-bottom: 1px solid var(--border-light, #E2E8F0); margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light, #E2E8F0); margin-bottom: 20px;">
         <div>
-          <div style="font-size: 22px; font-weight: 800; letter-spacing: -0.04em; color: var(--text-primary, #0F172A); line-height: 1;">
+          <div style="font-size: 24px; font-weight: 800; letter-spacing: -0.04em; color: #0F172A; line-height: 1;">
             VOVOI
           </div>
-          <div style="font-family: var(--font-mono, monospace); font-size: 11px; letter-spacing: 0.1em; color: var(--text-muted, #94A3B8); margin-top: 4px; text-transform: uppercase;">
-            OFFICIAL DIGITAL INVOICE
+          <div style="font-family: monospace; font-size: 11px; letter-spacing: 0.1em; color: #64748B; margin-top: 4px; text-transform: uppercase;">
+            OFFICIAL DIGITAL INVOICE &bull; GARANSI RESMI
           </div>
         </div>
 
         <div>
           @if($transaction->status == 'Pending')
-            <span style="background: rgba(245, 158, 11, 0.1); color: #B45309; border: 1px solid rgba(245, 158, 11, 0.25); padding: 6px 14px; border-radius: var(--radius-full, 9999px); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono, monospace);">
-              <span>⏳</span> Pending (Menunggu Konfirmasi Admin)
+            <span style="background: #fef3c7; color: #92400e; border: 1px solid #fde68a; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;">
+              <span>⏳</span> Pending (Menunggu Konfirmasi Seller)
             </span>
           @elseif($transaction->status == 'Paid')
-            <span style="background: rgba(37, 99, 235, 0.08); color: #1D4ED8; border: 1px solid rgba(37, 99, 235, 0.25); padding: 6px 14px; border-radius: var(--radius-full, 9999px); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono, monospace);">
-              <span>💳</span> Paid (Pembayaran Lunas - Sedang Dikemas)
+            <span style="background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;">
+              <span>💳</span> Paid (Lunas - Sedang Dikemas)
             </span>
           @elseif($transaction->status == 'Shipped')
-            <span style="background: rgba(16, 185, 129, 0.1); color: #047857; border: 1px solid rgba(16, 185, 129, 0.25); padding: 6px 14px; border-radius: var(--radius-full, 9999px); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono, monospace);">
-              <span>🚚</span> Shipped (Pesanan Sedang Dikirim Kurir)
+            <span style="background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;">
+              <span>🚚</span> Shipped (Pesanan Sedang Dikirim)
+            </span>
+          @elseif($transaction->status == 'Cancelled')
+            <span style="background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;">
+              <span>❌</span> Cancelled (Pesanan Dibatalkan)
             </span>
           @else
             <span class="v-tag-mono">
@@ -184,14 +207,10 @@
         <div class="receipt-detail-item">
           <span class="receipt-detail-label">Nomor Invoice</span>
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="receipt-detail-value" style="font-family: var(--font-mono, monospace); font-weight: 700; color: #0F172A;">
+            <span class="receipt-detail-value" style="font-family: monospace; color: #0B5ED7;">
               {{ $transaction->invoice_code }}
             </span>
             <button type="button" class="copy-btn no-print" onclick="copyInvoice('{{ $transaction->invoice_code }}')" title="Salin Kode Invoice">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
               <span id="copyText">Salin</span>
             </button>
           </div>
@@ -199,176 +218,227 @@
 
         <div class="receipt-detail-item">
           <span class="receipt-detail-label">Waktu Transaksi</span>
-          <span class="receipt-detail-value" style="font-family: var(--font-mono, monospace);">
-            {{ $transaction->created_at->format('d M Y, H:i') }} WIB
+          <span class="receipt-detail-value" style="font-family: monospace;">
+            {{ $transaction->created_at ? $transaction->created_at->format('d M Y, H:i') : '-' }} WIB
           </span>
         </div>
 
         <div class="receipt-detail-item">
           <span class="receipt-detail-label">Layanan Ekspedisi</span>
-          <span class="receipt-detail-value" style="display: inline-flex; align-items: center; gap: 6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-secondary, #64748B);">
-              <rect x="1" y="3" width="15" height="13"></rect>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-              <circle cx="5.5" cy="18.5" r="2.5"></circle>
-              <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
-            {{ $transaction->courier }}
+          <span class="receipt-detail-value">
+            🚚 {{ $transaction->courier }}
           </span>
         </div>
       </div>
 
       <!-- Customer & Shipping Information -->
-      <div style="background: #FFFFFF; border: 1px solid var(--border-light, #E2E8F0); border-radius: var(--radius-md, 12px); padding: 20px 24px; margin-bottom: 24px;">
-        <div style="font-family: var(--font-mono, monospace); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--text-muted, #94A3B8); text-transform: uppercase; margin-bottom: 12px;">
+      <div style="background: #FFFFFF; border: 1px solid var(--border-light, #E2E8F0); border-radius: 10px; padding: 18px 22px; margin-bottom: 20px;">
+        <div style="font-family: monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #64748B; text-transform: uppercase; margin-bottom: 10px;">
           TUJUAN PENGIRIMAN
         </div>
 
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
           <div>
-            <div style="font-size: 15px; font-weight: 700; color: var(--text-primary, #0F172A); margin-bottom: 4px;">
+            <div style="font-size: 15px; font-weight: 700; color: #0F172A; margin-bottom: 4px;">
               {{ $transaction->customer_name }}
             </div>
-            <div style="font-size: 13px; color: var(--text-secondary, #64748B); display: flex; align-items: center; gap: 6px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              {{ $transaction->customer_phone }}
+            <div style="font-size: 13px; color: #64748B;">
+              📞 {{ $transaction->customer_phone }}
             </div>
           </div>
 
           <div>
-            <div style="font-size: 13px; color: var(--text-primary, #0F172A); line-height: 1.5; display: flex; align-items: flex-start; gap: 8px;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-secondary, #64748B); flex-shrink: 0; margin-top: 2px;">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-              <span>{{ $transaction->customer_address }}</span>
+            <div style="font-size: 13px; color: #0F172A; line-height: 1.5;">
+              📍 {{ $transaction->customer_address }}
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Purchased Item Summary Box -->
-      <div style="border: 1px solid var(--border-light, #E2E8F0); border-radius: var(--radius-md, 12px); padding: 20px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-        <div>
-          <div style="font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: var(--text-muted, #94A3B8); text-transform: uppercase; margin-bottom: 4px;">
-            PRODUK DIPESAN
-          </div>
-          <div style="font-size: 16px; font-weight: 700; color: var(--text-primary, #0F172A);">
-            {{ $transaction->product_name }}
-          </div>
-          <div style="font-size: 13px; color: var(--text-secondary, #64748B); margin-top: 2px;">
-            Kuantitas: <strong>{{ $transaction->quantity }}x</strong> unit
-          </div>
-        </div>
-
-        <div style="text-align: right;">
-          <span class="v-tag-mono green">
-            <span class="v-dot-indicator green"></span>
-            ALLOCATED IN STOCK
-          </span>
-        </div>
-      </div>
-
-      <!-- VOVOI Digital Warranty Card (Embedded) -->
-      <div class="v-warranty-box" style="margin-bottom: 28px;">
-        <div class="v-warranty-header">
-          <div class="v-warranty-title">VOVOI OFFICIAL DIGITAL WARRANTY</div>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #94A3B8;">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            <polyline points="9 12 11 14 15 10"></polyline>
-          </svg>
-        </div>
-
-        <div class="v-warranty-row">
-          <span class="v-warranty-label">DEVICE HARDWARE</span>
-          <span class="v-warranty-val">{{ $transaction->product_name }}</span>
-        </div>
-
-        <div class="v-warranty-row">
-          <span class="v-warranty-label">SECURITY SERIAL</span>
-          <span class="v-warranty-val">SN-{{ strtoupper(substr(md5($transaction->invoice_code), 0, 8)) }}-VO</span>
-        </div>
-
-        <div class="v-warranty-row" style="margin-bottom: 0;">
-          <span class="v-warranty-label">COVERAGE LEVEL</span>
-          <span class="v-warranty-val green">2 Years VOVOI Official Care (Active)</span>
-        </div>
-
-        <div class="v-warranty-note">
-          Garansi resmi VOVOI ini telah teregistrasi secara otomatis di sistem cloud. Klaim garansi hardware, layanan tukar unit, atau servis gratis dapat dilakukan di seluruh Authorized Experience Store.
-        </div>
+      <!-- Item Details Table (Multi-Product or Single Product) -->
+      <div style="border: 1px solid var(--border-light, #E2E8F0); border-radius: 10px; overflow: hidden; margin-bottom: 24px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+          <thead>
+            <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0; text-align: left; color: #475569;">
+              <th style="padding: 12px 16px;">Produk Dipesan</th>
+              <th style="padding: 12px 16px; text-align: center;">Qty</th>
+              <th style="padding: 12px 16px; text-align: right;">Harga Satuan</th>
+              <th style="padding: 12px 16px; text-align: right;">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if($transaction->items && $transaction->items->count() > 0)
+              @foreach($transaction->items as $item)
+                <tr style="border-bottom: 1px solid #f1f5f9;">
+                  <td style="padding: 12px 16px; font-weight: 700; color: #0f172a;">
+                    {{ $item->product_name }}
+                  </td>
+                  <td style="padding: 12px 16px; text-align: center;">
+                    {{ $item->quantity }}x
+                  </td>
+                  <td style="padding: 12px 16px; text-align: right;">
+                    Rp {{ number_format($item->price, 0, ',', '.') }}
+                  </td>
+                  <td style="padding: 12px 16px; text-align: right; font-weight: 700;">
+                    Rp {{ number_format($item->subtotal, 0, ',', '.') }}
+                  </td>
+                </tr>
+              @endforeach
+            @else
+              <tr>
+                <td style="padding: 12px 16px; font-weight: 700; color: #0f172a;">
+                  {{ $transaction->product_name }}
+                </td>
+                <td style="padding: 12px 16px; text-align: center;">
+                  {{ $transaction->quantity }}x
+                </td>
+                <td style="padding: 12px 16px; text-align: right;">
+                  Rp {{ number_format(($transaction->total_amount - $transaction->shipping_cost + $transaction->discount_amount) / max(1, $transaction->quantity), 0, ',', '.') }}
+                </td>
+                <td style="padding: 12px 16px; text-align: right; font-weight: 700;">
+                  Rp {{ number_format($transaction->total_amount - $transaction->shipping_cost + $transaction->discount_amount, 0, ',', '.') }}
+                </td>
+              </tr>
+            @endif
+          </tbody>
+        </table>
       </div>
 
       <!-- Payment Breakdown Table -->
       <table class="order-breakdown-table">
         <tbody>
           <tr>
-            <td style="color: var(--text-secondary, #64748B);">Subtotal Produk:</td>
-            <td style="text-align: right; font-weight: 600; color: var(--text-primary, #0F172A);">
-              Rp {{ number_format($transaction->total_amount - $transaction->shipping_cost, 0, ',', '.') }}
+            <td style="color: #64748B;">Subtotal Produk:</td>
+            <td style="text-align: right; font-weight: 600; color: #0F172A;">
+              Rp {{ number_format($transaction->total_amount - $transaction->shipping_cost + $transaction->discount_amount, 0, ',', '.') }}
             </td>
           </tr>
           <tr>
-            <td style="color: var(--text-secondary, #64748B);">
-              Ongkos Kirim ({{ $transaction->courier }}):
+            <td style="color: #64748B;">Ongkos Kirim ({{ $transaction->courier }}):</td>
+            <td style="text-align: right; font-weight: 600; color: #0F172A;">
+              Rp {{ number_format($transaction->shipping_cost, 0, ',', '.') }}
             </td>
           </tr>
+
+          @if($transaction->discount_amount > 0)
           <tr>
-            <td style="padding: 10px 0; color: #64748B;">Status Pesanan:</td>
-            <td style="padding: 10px 0; text-align: right;">
-              @if($transaction->status == 'Pending')
-                <span style="background-color: #fff3cd; color: #856404; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
-                  ⏳ Pending (Menunggu Konfirmasi Admin)
-                </span>
-              @elseif($transaction->status == 'Paid')
-                <span style="background-color: #cfe2ff; color: #084298; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
-                  💳 Paid (Pembayaran Lunas - Sedang Dikemas)
-                </span>
-              @elseif($transaction->status == 'Shipped')
-                <span style="background-color: #d1e7dd; color: #0f5132; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
-                  🚚 Shipped (Pesanan Sedang Dikirim Kurir)
-                </span>
-              @else
-                <span style="background-color: #e2e8f0; color: #475569; padding: 5px 12px; border-radius: 4px; font-weight: bold; font-size: 13px; display: inline-block;">
-                  {{ $transaction->status }}
-                </span>
-              @endif
+            <td style="color: #059669; font-weight: 600;">
+              🏷️ Diskon Voucher ({{ $transaction->voucher_code ?: 'PROMO' }}):
+            </td>
+            <td style="text-align: right; font-weight: 700; color: #059669;">
+              - Rp {{ number_format($transaction->discount_amount, 0, ',', '.') }}
             </td>
           </tr>
-          <tr style="border-top: 2px solid var(--text-primary, #0F172A);">
-            <td style="padding-top: 16px; font-size: 15px; font-weight: 800; color: var(--text-primary, #0F172A); letter-spacing: -0.01em;">
+          @endif
+
+          <tr style="border-top: 2px solid #0F172A;">
+            <td style="padding-top: 14px; font-size: 15px; font-weight: 800; color: #0F172A;">
               TOTAL PEMBAYARAN:
             </td>
-            <td style="padding-top: 16px; text-align: right; font-size: 22px; font-weight: 800; color: var(--text-primary, #0F172A); letter-spacing: -0.02em;">
+            <td style="padding-top: 14px; text-align: right; font-size: 22px; font-weight: 800; color: #0F172A;">
               Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}
             </td>
           </tr>
         </tbody>
       </table>
 
-      <!-- Bottom Interactive Action Buttons -->
-      <div class="no-print" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-light, #E2E8F0);">
+      <!-- VOVOI Digital Warranty Note -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 18px; font-size: 12px; color: #475569; line-height: 1.5;">
+        🔒 <strong>Garansi Resmi VOVOI Care:</strong> Simpan E-Invoice ini sebagai bukti registrasi garansi resmi pabrik. Klaim unit dapat dilakukan di seluruh jaringan authorized service center dengan menunjukkan nomor invoice <strong>{{ $transaction->invoice_code }}</strong>.
+      </div>
+
+      <!-- FITUR INOVASI P12: PEMBATALAN PESANAN OLEH PEMBELI SELAMA STATUS PENDING -->
+      @if($transaction->status === 'Pending')
+        <div class="no-print cancel-order-box" style="margin-top: 24px; padding: 18px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <strong style="color: #92400e; font-size: 14px; display: block;">Ingin membatalkan pesanan ini?</strong>
+            <span style="font-size: 12px; color: #b45309;">Pesanan dapat dibatalkan selama status masih Pending. Stok barang akan otomatis dikembalikan.</span>
+          </div>
+          <form action="{{ route('order.cancel', $transaction->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan {{ $transaction->invoice_code }}? Stok barang akan dikembalikan ke etalase.');" style="margin: 0;">
+            @csrf
+            <button type="submit" style="background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; padding: 9px 16px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer;">
+              ✕ Batalkan Pesanan Ini
+            </button>
+          </form>
+        </div>
+      @endif
+
+      <!-- FITUR INOVASI P12: ULASAN & RATING BINTANG 1-5 OLEH PEMBELI (JIKA SHIPPED) -->
+      @if($transaction->status === 'Shipped')
+        <div class="no-print review-section-box" style="margin-top: 28px; padding: 24px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px;">
+          <h3 style="margin-top: 0; margin-bottom: 6px; font-size: 16px; font-weight: 800; color: #166534;">
+            ⭐ Berikan Ulasan &amp; Rating Produk
+          </h3>
+          <p style="margin: 0 0 16px 0; font-size: 13px; color: #15803d;">
+            Pesanan Anda telah dikirim! Bantu calon pembeli lain dengan memberikan penilaian pengalaman Anda.
+          </p>
+
+          @php
+            $existingReview = $transaction->reviews->first();
+          @endphp
+
+          @if($existingReview)
+            <div style="background: white; border: 1px solid #86efac; border-radius: 8px; padding: 16px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span style="font-size: 13px; font-weight: 700; color: #166534;">✓ Ulasan Anda Telah Terkirim</span>
+                <span style="color: #f59e0b; font-size: 16px;">
+                  @for($i=1; $i<=5; $i++)
+                    {{ $i <= $existingReview->rating ? '★' : '☆' }}
+                  @endfor
+                </span>
+              </div>
+              <p style="margin: 0; font-size: 14px; color: #334155;">
+                "{{ $existingReview->comment }}"
+              </p>
+            </div>
+          @else
+            <form action="{{ route('reviews.store') }}" method="POST">
+              @csrf
+              <input type="hidden" name="transaction_id" value="{{ $transaction->id }}">
+              <input type="hidden" name="product_id" value="{{ $transaction->product_id }}">
+
+              <div style="margin-bottom: 14px;">
+                <label style="display: block; font-size: 13px; font-weight: 700; color: #166534; margin-bottom: 6px;">
+                  Pilih Rating Bintang:
+                </label>
+                <div style="display: flex; gap: 14px; align-items: center;">
+                  @for($star = 5; $star >= 1; $star--)
+                    <label style="display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 700; color: #f59e0b; cursor: pointer;">
+                      <input type="radio" name="rating" value="{{ $star }}" {{ $star == 5 ? 'checked' : '' }}>
+                      {{ $star }} ★
+                    </label>
+                  @endfor
+                </div>
+              </div>
+
+              <div style="margin-bottom: 16px;">
+                <label style="display: block; font-size: 13px; font-weight: 700; color: #166534; margin-bottom: 6px;">
+                  Tulis Ulasan &amp; Pengalaman Produk:
+                </label>
+                <textarea name="comment" rows="3" placeholder="Ceritakan kepuasan Anda mengenai performa barang, kecepatan pengiriman, dan layanan VOVOI..." required style="width: 100%; box-sizing: border-box; padding: 10px 14px; border: 1px solid #86efac; border-radius: 8px; font-size: 13px; font-family: inherit;"></textarea>
+              </div>
+
+              <button type="submit" style="background: #16a34a; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer;">
+                Kirim Ulasan Bintang &rarr;
+              </button>
+            </form>
+          @endif
+        </div>
+      @endif
+
+      <!-- FITUR INOVASI P12: TOMBOL AKSI CETAK E-INVOICE & KEMBALI (HIDDEN SAAT PRINT) -->
+      <div class="no-print action-buttons-box" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-light, #E2E8F0);">
         <a href="/" class="v-btn v-btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
           Kembali ke Beranda
         </a>
 
-        <button type="button" class="v-btn v-btn-secondary" onclick="window.print()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 6 2 18 2 18 9"></polyline>
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-            <rect x="6" y="14" width="12" height="8"></rect>
-          </svg>
-          Cetak Bukti Transaksi
+        <!-- Tombol Cetak window.print() (Header & Tombol Tersembunyi saat Cetak) -->
+        <button type="button" class="v-btn v-btn-secondary" onclick="window.print()" style="font-weight: 700; background: #0f172a; color: #ffffff; border: none;">
+          🖨️ Cetak E-Invoice (Print PDF)
         </button>
 
         <a href="/katalog" class="v-btn v-btn-secondary">
-          Lihat Produk Lainnya
+          Lihat Katalog Lainnya
         </a>
       </div>
 
