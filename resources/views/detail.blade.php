@@ -3,262 +3,238 @@
 @section('title', $product->name . ' - VOVOI')
 
 @section('konten_utama')
-<section style="padding: 28px 0 64px;">
-  <div class="v-container">
+<section style="padding: 24px 0 64px;">
+  <div>
     
+    <!-- Flash Notification -->
+    @if(session('error'))
+      <div style="background-color: #fef2f2; color: #991b1b; padding: 14px 18px; border-radius: 8px; border: 1px solid #fecaca; margin-bottom: 24px; font-size: 14px; font-weight: 600;">
+        ⚠️ {{ session('error') }}
+      </div>
+    @endif
+
     <!-- Breadcrumbs -->
-    <nav style="display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-bottom: 32px;">
-      <a href="/katalog" style="color: var(--text-secondary);">Store</a>
+    <nav style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); margin-bottom: 28px;">
+      <a href="/" style="color: #0B5ED7; text-decoration: none; font-weight: 500;">Beranda</a>
       <span>&rsaquo;</span>
-      <a href="/katalog" style="color: var(--text-secondary);">Katalog</a>
+      <a href="/katalog" style="color: #0B5ED7; text-decoration: none; font-weight: 500;">Katalog</a>
+      @if($product->category)
+        <span>&rsaquo;</span>
+        <a href="/katalog?category={{ $product->category->slug }}" style="color: #0B5ED7; text-decoration: none; font-weight: 500;">{{ $product->category->name }}</a>
+      @endif
       <span>&rsaquo;</span>
       <span style="color: var(--text-primary); font-weight: 700;">{{ $product->name }}</span>
     </nav>
 
     <!-- Product Main Grid (Gallery, Info, Sticky Buy Box) -->
-    <div style="display: grid; grid-template-columns: 440px 1fr 300px; gap: 40px; align-items: start; margin-bottom: 72px;">
+    <div style="display: grid; grid-template-columns: 420px 1fr 310px; gap: 36px; align-items: start; margin-bottom: 56px;">
       
       <!-- 1. Left Gallery Column -->
       <div>
-        <div style="width: 100%; height: 420px; background: #F8F9FA; border-radius: var(--radius-lg); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 24px; margin-bottom: 16px;">
-          <img id="mainProductImg" src="{{ $product->image ? asset('assets/images/' . $product->image) : asset('assets/images/phone-x-pro.svg') }}" alt="{{ $product->name }}" style="max-width: 100%; max-height: 100%; object-fit: contain; transition: transform var(--transition-normal);">
+        <div style="width: 100%; height: 380px; background: #FFFFFF; border-radius: 12px; border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 24px; margin-bottom: 16px; position: relative;">
+          @if($product->image)
+            <img id="mainProductImg" src="{{ asset('assets/images/' . $product->image) }}" alt="{{ $product->name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+          @else
+            <img id="mainProductImg" src="{{ asset('assets/images/phone-x-pro.svg') }}" alt="{{ $product->name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+          @endif
+
+          @if($product->isOutOfStock())
+            <span style="position: absolute; top: 16px; left: 16px; background: #dc2626; color: #ffffff; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.5px;">
+              STOK HABIS
+            </span>
+          @endif
         </div>
 
         <!-- Thumbnails -->
         <div style="display: flex; gap: 10px; justify-content: flex-start;">
-          <button type="button" class="v-thumb-btn active" onclick="switchThumb(this, '{{ $product->image ? asset('assets/images/' . $product->image) : asset('assets/images/phone-x-pro.svg') }}')" style="width: 60px; height: 60px; border-radius: var(--radius-sm); border: 2px solid var(--text-primary); background: #F8F9FA; padding: 4px; cursor: pointer;">
-            <img src="{{ $product->image ? asset('assets/images/' . $product->image) : asset('assets/images/phone-thumb1.svg') }}" alt="Angle 1" style="width: 100%; height: 100%; object-fit: contain;">
-          </button>
-          
-          <button type="button" class="v-thumb-btn" onclick="switchThumb(this, '{{ asset('assets/images/flagship-phone.svg') }}')" style="width: 60px; height: 60px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #F8F9FA; padding: 4px; cursor: pointer;">
-            <img src="{{ asset('assets/images/phone-thumb2.svg') }}" alt="Angle 2" style="width: 100%; height: 100%; object-fit: contain;">
-          </button>
-          
-          <button type="button" class="v-thumb-btn" onclick="switchThumb(this, '{{ asset('assets/images/phone-thumb3.svg') }}')" style="width: 60px; height: 60px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #F8F9FA; padding: 4px; cursor: pointer;">
-            <img src="{{ asset('assets/images/phone-thumb3.svg') }}" alt="Angle 3" style="width: 100%; height: 100%; object-fit: contain;">
-          </button>
-          
-          <button type="button" class="v-thumb-btn" onclick="switchThumb(this, '{{ asset('assets/images/phone-thumb4.svg') }}')" style="width: 60px; height: 60px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #F8F9FA; padding: 4px; cursor: pointer;">
-            <img src="{{ asset('assets/images/phone-thumb4.svg') }}" alt="Angle 4" style="width: 100%; height: 100%; object-fit: contain;">
-          </button>
-          
-          <button type="button" class="v-thumb-btn" onclick="switchThumb(this, '{{ asset('assets/images/phone-thumb5.svg') }}')" style="width: 60px; height: 60px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #F8F9FA; padding: 4px; cursor: pointer;">
-            <img src="{{ asset('assets/images/phone-thumb5.svg') }}" alt="Angle 5" style="width: 100%; height: 100%; object-fit: contain;">
+          <button type="button" class="v-thumb-btn" style="width: 58px; height: 58px; border-radius: 6px; border: 2px solid #0f172a; background: #FFFFFF; padding: 4px; cursor: pointer;">
+            <img src="{{ $product->image ? asset('assets/images/' . $product->image) : asset('assets/images/phone-x-pro.svg') }}" alt="Angle 1" style="width: 100%; height: 100%; object-fit: contain;">
           </button>
         </div>
       </div>
 
       <!-- 2. Center Product Details Column -->
       <div>
-        <h1 style="font-size: 36px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px;">
+        @if($product->category)
+          <div style="display: inline-block; background: #eff6ff; color: #0B5ED7; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; border: 1px solid #bfdbfe;">
+            {{ $product->category->name }}
+          </div>
+        @endif
+
+        <h1 style="font-size: 30px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 10px 0; color: #0f172a;">
           {{ $product->name }}
         </h1>
 
         <!-- Rating & Sales -->
-        <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;">
-          <span>Sold 1k+</span>
-          <span>&bull;</span>
-          <span style="display: flex; align-items: center; gap: 4px; color: var(--text-primary); font-weight: 700;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-            </svg>
-            4.9 <span style="color: var(--text-secondary); font-weight: 400;">(450 reviews)</span>
+        <div style="display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-secondary); margin-bottom: 18px;">
+          <span style="display: flex; align-items: center; gap: 4px; color: #0f172a; font-weight: 700;">
+            <span style="color: #f59e0b; font-size: 16px;">★</span>
+            {{ number_format($product->averageRating(), 1) }}
+            <span style="color: #64748b; font-weight: 400;">({{ $product->reviews->count() }} Ulasan Pembeli)</span>
           </span>
+          <span>&bull;</span>
+          <span style="color: #64748b;">Terjual 100+ Unit</span>
         </div>
 
         <!-- Price -->
-        <div id="productPriceDisplay" style="font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 24px;">
+        <div id="productPriceDisplay" style="font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px; color: #0f172a;">
           Rp {{ number_format($product->price, 0, ',', '.') }}
         </div>
 
-        <hr style="border: none; border-top: 1px solid var(--border-light); margin-bottom: 24px;">
+        <hr style="border: none; border-top: 1px solid var(--border-light); margin-bottom: 20px;">
 
-        <!-- Availability -->
+        <!-- Availability / Stock Status (P12 REQUIREMENT) -->
         <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-          <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">Availability:</span>
-          <span class="v-tag-mono green">
-            <span class="v-dot-indicator green"></span>
-            In Stock at Manggarai
-          </span>
+          <span style="font-size: 14px; font-weight: 600; color: var(--text-primary);">Ketersediaan Stok:</span>
+          @if($product->isOutOfStock())
+            <span style="background: #fee2e2; color: #dc2626; border: 1px solid #fca5a5; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; gap: 6px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #dc2626;"></span>
+              Stok Habis (0 Unit)
+            </span>
+          @elseif($product->stock <= 5)
+            <span style="background: #fef3c7; color: #d97706; border: 1px solid #fde68a; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: #d97706;"></span>
+              Stok Terbatas (Sisa {{ $product->stock }} Unit)
+            </span>
+          @else
+            <span class="v-tag-mono green">
+              <span class="v-dot-indicator green"></span>
+              Stok Tersedia ({{ $product->stock }} Unit Siap Kirim)
+            </span>
+          @endif
         </div>
 
-        <!-- Color Selector -->
-        <div style="margin-bottom: 24px;">
-          <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px;">
-            Color: <span id="selectedColorName" style="color: var(--text-secondary); font-weight: 500;">Titanium Silver</span>
-          </div>
-          <div style="display: flex; gap: 12px; align-items: center;">
-            <button type="button" class="v-color-dot active" onclick="selectColor(this, 'Titanium Silver')" 
-              style="width: 32px; height: 32px; border-radius: 50%; background: #D4D4D8; border: 2px solid #FFFFFF; outline: 2px solid var(--text-primary); cursor: pointer; transition: all var(--transition-fast);">
-            </button>
-            <button type="button" class="v-color-dot" onclick="selectColor(this, 'Obsidian Black')" 
-              style="width: 32px; height: 32px; border-radius: 50%; background: #27272A; border: 2px solid #FFFFFF; outline: 1px solid var(--border-medium); cursor: pointer; transition: all var(--transition-fast);">
-            </button>
-          </div>
-        </div>
+        <!-- Detail Deskripsi -->
+        <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+          <h3 style="margin-top: 0; margin-bottom: 12px; font-size: 16px; font-weight: 700; color: #0f172a;">
+            Deskripsi &amp; Spesifikasi Produk
+          </h3>
+          <p style="font-size: 14px; line-height: 1.7; color: #475569; margin: 0 0 16px 0; white-space: pre-line;">
+            {{ $product->description }}
+          </p>
 
-        <!-- Storage Selector -->
-        <div style="margin-bottom: 32px;">
-          <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px;">
-            Storage:
-          </div>
-          <div style="display: flex; gap: 12px;">
-            <button type="button" class="v-storage-btn active" onclick="selectStorage(this, {{ $product->price }})" 
-              style="padding: 10px 24px; border-radius: var(--radius-sm); border: 2px solid var(--text-primary); background: #FFFFFF; font-size: 14px; font-weight: 700; color: var(--text-primary); cursor: pointer;">
-              256GB
-            </button>
-            <button type="button" class="v-storage-btn" onclick="selectStorage(this, {{ $product->price + 1000000 }})" 
-              style="padding: 10px 24px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #FFFFFF; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer;">
-              512GB
-            </button>
-            <button type="button" class="v-storage-btn" onclick="selectStorage(this, {{ $product->price + 2000000 }})" 
-              style="padding: 10px 24px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #FFFFFF; font-size: 14px; font-weight: 500; color: var(--text-secondary); cursor: pointer;">
-              1TB
-            </button>
-          </div>
-        </div>
-
-        <hr style="border: none; border-top: 1px solid var(--border-light); margin-bottom: 24px;">
-
-        <!-- Tabs: Detail Produk / Spesifikasi -->
-        <div>
-          <div style="display: flex; gap: 24px; border-bottom: 1px solid var(--border-light); margin-bottom: 16px;">
-            <button type="button" id="tabDetailBtn" onclick="switchTab('detail')" 
-              style="background: none; border: none; font-size: 14px; font-weight: 700; color: var(--text-primary); padding: 8px 0; border-bottom: 2px solid var(--text-primary); cursor: pointer;">
-              Detail Produk
-            </button>
-            <button type="button" id="tabSpecBtn" onclick="switchTab('spec')" 
-              style="background: none; border: none; font-size: 14px; font-weight: 500; color: var(--text-muted); padding: 8px 0; border-bottom: 2px solid transparent; cursor: pointer;">
-              Spesifikasi
-            </button>
-          </div>
-
-          <div id="tabDetailContent">
-            <p style="font-size: 14px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 16px;">
-              {{ $product->description }}
-            </p>
-            <ul style="padding-left: 20px; font-size: 13px; line-height: 1.8; color: var(--text-secondary);">
-              <li>Serial Produk: VOVOI-{{ str_pad($product->id, 4, '0', STR_PAD_LEFT) }}</li>
-              <li>Garansi Resmi 1 Tahun VOVOI Indonesia</li>
-              <li>Produk 100% Original & Terverifikasi</li>
-              <li>Pengiriman Cepat & Proteksi Asuransi Penuh</li>
-            </ul>
-          </div>
-
-          <div id="tabSpecContent" style="display: none;">
-            <div style="display: grid; grid-template-columns: 140px 1fr; gap: 8px; font-size: 13px; color: var(--text-secondary);">
-              <span style="font-weight: 600; color: var(--text-primary);">Product ID:</span>
-              <span>VOVOI-{{ str_pad($product->id, 4, '0', STR_PAD_LEFT) }}</span>
-              <span style="font-weight: 600; color: var(--text-primary);">Product Name:</span>
-              <span>{{ $product->name }}</span>
-              <span style="font-weight: 600; color: var(--text-primary);">Price:</span>
-              <span>Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-              <span style="font-weight: 600; color: var(--text-primary);">Status:</span>
-              <span>Tersedia (Ready Stock)</span>
-            </div>
-          </div>
+          <ul style="padding-left: 20px; font-size: 13px; line-height: 1.8; color: #64748b; margin: 0;">
+            <li>Kode Seri: VOVOI-{{ str_pad($product->id, 4, '0', STR_PAD_LEFT) }}</li>
+            <li>Garansi Resmi 2 Tahun VOVOI Care Indonesia (Active)</li>
+            <li>100% Produk Original & Tersegel Pabrik</li>
+            <li>Bebas Pengembalian jika cacat fisik dalam 7 hari</li>
+          </ul>
         </div>
 
       </div>
 
       <!-- 3. Right Sticky Buy Box Card -->
-      <aside style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px; position: sticky; top: 96px; box-shadow: var(--shadow-md);">
-        <h2 style="font-size: 14px; font-weight: 700; margin-bottom: 16px;">
-          Atur jumlah dan catatan
+      <aside style="background: #FFFFFF; border: 1px solid var(--border-light); border-radius: 12px; padding: 24px; position: sticky; top: 96px; box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
+        <h2 style="font-size: 14px; font-weight: 700; margin-top: 0; margin-bottom: 16px; color: #0f172a;">
+          Atur Jumlah Pesanan
         </h2>
 
-        <!-- Quantity Counter -->
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 6px 12px;">
-          <button type="button" onclick="adjustQty(-1)" style="background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-secondary); width: 24px; height: 24px;">&minus;</button>
-          <span id="buyQty" style="font-size: 14px; font-weight: 700;">1</span>
-          <button type="button" onclick="adjustQty(1)" style="background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-secondary); width: 24px; height: 24px;">&#43;</button>
-        </div>
+        <!-- Quantity Counter (only if in stock) -->
+        @if(!$product->isOutOfStock())
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; border: 1px solid var(--border-light); border-radius: 8px; padding: 6px 14px; background: #f8fafc;">
+            <button type="button" onclick="adjustQty(-1)" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #475569; width: 28px; height: 28px;">&minus;</button>
+            <span id="buyQty" style="font-size: 15px; font-weight: 700;">1</span>
+            <button type="button" onclick="adjustQty(1)" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #475569; width: 28px; height: 28px;">&#43;</button>
+          </div>
 
-        <!-- Subtotal -->
-        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px;">
-          <span style="font-size: 13px; color: var(--text-secondary);">Subtotal</span>
-          <span id="subtotalDisplay" style="font-size: 22px; font-weight: 800; letter-spacing: -0.02em;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-        </div>
+          <!-- Subtotal -->
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px;">
+            <span style="font-size: 13px; color: #64748b;">Subtotal:</span>
+            <span id="subtotalDisplay" style="font-size: 20px; font-weight: 800; color: #0f172a;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+          </div>
 
-        <!-- Buttons -->
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-          <a href="/keranjang?add={{ $product->id }}" class="v-btn v-btn-primary v-btn-block" style="text-align: center; text-decoration: none;">
-            + Masukkan Keranjang
-          </a>
-          <a href="/checkout/{{ $product->id }}" class="v-btn v-btn-secondary v-btn-block" style="text-align: center; text-decoration: none;">
-            Beli Langsung
-          </a>
-        </div>
+          <!-- Buttons Active -->
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+            <a href="/keranjang?add={{ $product->id }}" class="v-btn v-btn-primary" style="width: 100%; padding: 13px; font-size: 14px; border-radius: 8px; text-decoration: none; text-align: center;">
+              + Masukkan Keranjang
+            </a>
 
-        <!-- Social / Action Links -->
-        <div style="display: flex; justify-content: space-around; align-items: center; padding-top: 16px; border-top: 1px solid var(--border-light); font-size: 12px; font-weight: 600; color: var(--text-secondary);">
-          <button type="button" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px; color: inherit;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-            Chat
-          </button>
-          <button type="button" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px; color: inherit;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            Wishlist
-          </button>
-          <button type="button" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px; color: inherit;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-            Share
-          </button>
-        </div>
+            <a id="buyDirectBtn" href="/checkout/{{ $product->id }}" class="v-btn v-btn-secondary" style="width: 100%; padding: 13px; font-size: 14px; border-radius: 8px; text-decoration: none; text-align: center; background: #f8fafc; border: 1px solid #cbd5e1;">
+              Beli Langsung Sekarang
+            </a>
+          </div>
+        @else
+          <!-- Out of Stock: Buttons Disabled (P12 REQUIREMENT) -->
+          <div style="background: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 14px; font-weight: 800; color: #dc2626; margin-bottom: 4px;">
+              STOK PRODUK HABIS
+            </div>
+            <p style="font-size: 12px; color: #991b1b; margin: 0; line-height: 1.4;">
+              Mohon maaf, saat ini unit tidak tersedia di gudang pusat. Silakan pilih produk lain di katalog.
+            </p>
+          </div>
 
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+            <button type="button" disabled style="width: 100%; padding: 13px; font-size: 14px; border-radius: 8px; border: 1px solid #cbd5e1; background: #f1f5f9; color: #94a3b8; font-weight: 700; cursor: not-allowed;">
+              + Keranjang (Nonaktif)
+            </button>
+            <button type="button" disabled style="width: 100%; padding: 13px; font-size: 14px; border-radius: 8px; border: 1px solid #cbd5e1; background: #f1f5f9; color: #94a3b8; font-weight: 700; cursor: not-allowed;">
+              Beli Langsung (Stok Habis)
+            </button>
+          </div>
+        @endif
+
+        <div style="border-top: 1px solid var(--border-light); padding-top: 16px; font-size: 12px; color: #64748b; line-height: 1.6;">
+          🛡️ <strong>Jaminan VOVOI:</strong> Pengiriman berasuransi, serial tag otentik, dan garansi resmi pabrik.
+        </div>
       </aside>
 
     </div>
 
-    <!-- Bottom Feature Banners (Serial Tag Tracking & Paperless Warranty) -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 32px; border-top: 1px solid var(--border-light);">
-      
-      <!-- Banner 1: Serial Tag Tracking -->
-      <div class="v-feature-card light">
-        <div class="v-feature-card-header">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
-          <span class="v-tag-mono" style="background: #E2E8F0; color: #475569;">
-            VOVOI-{{ str_pad($product->id, 4, '0', STR_PAD_LEFT) }}
-          </span>
-        </div>
+    <!-- 4. SECTION ULASAN & RATING PEMBELI (FITUR INOVASI P12) -->
+    <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: 14px; padding: 36px; margin-bottom: 48px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #f1f5f9; padding-bottom: 18px; margin-bottom: 24px;">
         <div>
-          <h3>Serial Tag: {{ $product->name }}</h3>
-          <p>
-            Verify authenticity instantly. Every VOVOI product carries a cryptographic tag synchronizing physical ownership with our immutable ledger.
+          <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0;">
+            ⭐ Ulasan dan Penilaian Pembeli
+          </h2>
+          <p style="font-size: 13px; color: #64748b; margin: 0;">
+            Ulasan nyata dari pembeli yang pesanan produknya telah berhasil dikirim (Shipped).
           </p>
         </div>
-        <a href="#" class="v-feature-link">
-          Explore verification &rarr;
-        </a>
+        <div style="text-align: right;">
+          <span style="font-size: 28px; font-weight: 800; color: #0f172a;">{{ number_format($product->averageRating(), 1) }}</span>
+          <span style="font-size: 14px; color: #f59e0b;">/ 5.0</span>
+          <div style="font-size: 12px; color: #64748b;">{{ $product->reviews->count() }} Total Ulasan</div>
+        </div>
       </div>
 
-      <!-- Banner 2: Paperless Warranty -->
-      <div class="v-feature-card dark">
-        <div class="v-feature-card-header">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            <polyline points="9 12 11 14 15 10"></polyline>
-          </svg>
-          <span class="v-tag-mono dark">
-            DIGITAL_SHIELD
-          </span>
+      @if($product->reviews->count() > 0)
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          @foreach($product->reviews as $rev)
+            <div style="padding: 18px 20px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <div style="width: 32px; height: 32px; border-radius: 50%; background: #0B5ED7; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
+                    {{ strtoupper(substr($rev->customer_name, 0, 1)) }}
+                  </div>
+                  <div>
+                    <strong style="font-size: 14px; color: #0f172a;">{{ $rev->customer_name }}</strong>
+                    <span style="font-size: 11px; color: #059669; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; font-weight: 600; margin-left: 6px;">Pembeli Terverifikasi</span>
+                  </div>
+                </div>
+                <div style="color: #f59e0b; font-size: 16px; letter-spacing: 2px;">
+                  @for($i = 1; $i <= 5; $i++)
+                    {{ $i <= $rev->rating ? '★' : '☆' }}
+                  @endfor
+                </div>
+              </div>
+              <p style="font-size: 14px; color: #334155; margin: 0; line-height: 1.6;">
+                "{{ $rev->comment }}"
+              </p>
+              <div style="font-size: 11px; color: #94a3b8; margin-top: 8px;">
+                Diverifikasi via Invoice #{{ $rev->transaction?->invoice_code }} &bull; {{ $rev->created_at ? $rev->created_at->format('d M Y') : 'Terbaru' }}
+              </div>
+            </div>
+          @endforeach
         </div>
-        <div>
-          <h3>Paperless Warranty</h3>
-          <p>
-            Your coverage is activated the moment you purchase. Access diagnostics, support, and claim status directly through your VOVOI ID.
+      @else
+        <div style="text-align: center; padding: 40px; color: #64748b; background: #f8fafc; border-radius: 10px;">
+          <p style="margin: 0; font-size: 14px;">
+            Belum ada ulasan untuk produk ini. Pembeli dengan status pesanan <strong>Shipped</strong> dapat memberikan penilaian di halaman E-Invoice!
           </p>
         </div>
-        <a href="#" class="v-feature-link">
-          View coverage terms &rarr;
-        </a>
-      </div>
-
+      @endif
     </div>
 
   </div>
@@ -267,79 +243,18 @@
 
 @section('extra_js')
 <script>
-  let basePrice = {{ $product->price }};
+  const basePrice = {{ $product->price }};
+  const maxStock = {{ $product->stock }};
   let currentQty = 1;
 
-  function switchThumb(btn, imgSrc) {
-    document.querySelectorAll('.v-thumb-btn').forEach(b => {
-      b.style.borderColor = 'var(--border-light)';
-    });
-    btn.style.borderColor = 'var(--text-primary)';
-    document.getElementById('mainProductImg').src = imgSrc;
-  }
-
-  function selectColor(btn, colorName) {
-    document.querySelectorAll('.v-color-dot').forEach(b => {
-      b.style.outline = '1px solid var(--border-medium)';
-    });
-    btn.style.outline = '2px solid var(--text-primary)';
-    document.getElementById('selectedColorName').innerText = colorName;
-  }
-
-  function selectStorage(btn, price) {
-    document.querySelectorAll('.v-storage-btn').forEach(b => {
-      b.style.borderColor = 'var(--border-light)';
-      b.style.fontWeight = '500';
-      b.style.color = 'var(--text-secondary)';
-    });
-    btn.style.borderColor = 'var(--text-primary)';
-    btn.style.fontWeight = '700';
-    btn.style.color = 'var(--text-primary)';
-    basePrice = price;
-    updatePrice();
-  }
-
   function adjustQty(delta) {
-    currentQty = Math.max(1, currentQty + delta);
+    if (maxStock <= 0) return;
+    currentQty = Math.max(1, Math.min(maxStock, currentQty + delta));
     document.getElementById('buyQty').innerText = currentQty;
-    updatePrice();
-  }
-
-  function updatePrice() {
-    const total = basePrice * currentQty;
-    document.getElementById('productPriceDisplay').innerText = 'Rp ' + Number(basePrice).toLocaleString('id-ID');
-    document.getElementById('subtotalDisplay').innerText = 'Rp ' + Number(total).toLocaleString('id-ID');
-  }
-
-  function switchTab(tab) {
-    const detailBtn = document.getElementById('tabDetailBtn');
-    const specBtn = document.getElementById('tabSpecBtn');
-    const detailContent = document.getElementById('tabDetailContent');
-    const specContent = document.getElementById('tabSpecContent');
-
-    if (tab === 'detail') {
-      detailBtn.style.color = 'var(--text-primary)';
-      detailBtn.style.fontWeight = '700';
-      detailBtn.style.borderBottom = '2px solid var(--text-primary)';
-      specBtn.style.color = 'var(--text-muted)';
-      specBtn.style.fontWeight = '500';
-      specBtn.style.borderBottom = '2px solid transparent';
-      detailContent.style.display = 'block';
-      specContent.style.display = 'none';
-    } else {
-      specBtn.style.color = 'var(--text-primary)';
-      specBtn.style.fontWeight = '700';
-      specBtn.style.borderBottom = '2px solid var(--text-primary)';
-      detailBtn.style.color = 'var(--text-muted)';
-      detailBtn.style.fontWeight = '500';
-      detailBtn.style.borderBottom = '2px solid transparent';
-      detailContent.style.display = 'none';
-      specContent.style.display = 'block';
-    }
-  }
-
-  function addToCartNotification() {
-    alert('Produk telah ditambahkan ke keranjang!');
+    document.getElementById('cartFormQty').value = currentQty;
+    
+    const subtotal = basePrice * currentQty;
+    document.getElementById('subtotalDisplay').innerText = 'Rp ' + Number(subtotal).toLocaleString('id-ID');
   }
 </script>
 @endsection

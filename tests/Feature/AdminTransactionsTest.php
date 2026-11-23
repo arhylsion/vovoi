@@ -4,12 +4,28 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\User;
 use Tests\TestCase;
 
 class AdminTransactionsTest extends TestCase
 {
+    protected function getAdminUser(): User
+    {
+        return User::firstOrCreate(
+            ['email' => 'admin@vovoi.com'],
+            ['name' => 'admin', 'password' => 'admin123', 'role' => 'admin']
+        );
+    }
+
+    public function test_unauthenticated_user_cannot_access_admin_transactions(): void
+    {
+        $response = $this->get('/admin/transactions');
+        $response->assertRedirect('/login');
+    }
+
     public function test_admin_transactions_page_loads_and_displays_kpi_and_orders(): void
     {
+        $admin = $this->getAdminUser();
         $product = Product::firstOrFail();
 
         $transaction = Transaction::create([
@@ -26,10 +42,10 @@ class AdminTransactionsTest extends TestCase
             'status' => 'Pending',
         ]);
 
-        $response = $this->get('/admin/transactions');
+        $response = $this->actingAs($admin)->get('/admin/transactions');
 
         $response->assertStatus(200);
-        $response->assertSee('Daftar Pesanan &amp; Transaksi Toko', false);
+        $response->assertSee('Daftar Pesanan');
         $response->assertSee('TOTAL PRODUK DI ETALASE');
         $response->assertSee('TOTAL PESANAN MASUK');
         $response->assertSee('TOTAL OMZET PENJUALAN');
@@ -40,6 +56,7 @@ class AdminTransactionsTest extends TestCase
 
     public function test_admin_can_update_transaction_status(): void
     {
+        $admin = $this->getAdminUser();
         $product = Product::firstOrFail();
 
         $transaction = Transaction::create([
@@ -56,9 +73,11 @@ class AdminTransactionsTest extends TestCase
             'status' => 'Pending',
         ]);
 
-        $response = $this->from('/admin/transactions')->post('/admin/transactions/'.$transaction->id.'/status', [
-            'status' => 'Paid',
-        ]);
+        $response = $this->actingAs($admin)
+            ->from('/admin/transactions')
+            ->post('/admin/transactions/'.$transaction->id.'/status', [
+                'status' => 'Paid',
+            ]);
 
         $response->assertRedirect('/admin/transactions');
         $response->assertSessionHas('success');

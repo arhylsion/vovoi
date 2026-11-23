@@ -2,30 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminController extends Controller
 {
     // =========================================================================
-    // MATERI PERTEMUAN 8: MANAJEMEN PESANAN MASUK & AGGREGATE QUERY
+    // MANAJEMEN PESANAN MASUK & AGGREGATE QUERY
     // =========================================================================
 
-    // FUNGSI 1: Menampilkan Halaman Dashboard & Tabel Pesanan Masuk (P8)
     public function transactions(): View
     {
-        // A. Mengambil seluruh pesanan diurutkan dari yang paling baru masuk (latest)
-        $transactions = Transaction::latest()->get();
+        $transactions = Transaction::with(['items.product', 'reviews'])->latest()->get();
 
-        // B. Menghitung ringkasan bisnis otomatis (Aggregate Query)
         $totalProducts = Product::count();
         $totalTransactions = Transaction::count();
-        $totalRevenue = Transaction::sum('total_amount');
+        $totalRevenue = Transaction::where('status', '!=', 'Cancelled')->sum('total_amount');
 
-        // C. Mengirimkan seluruh data ke view resources/views/admin/transactions.blade.php
         return view('admin.transactions', compact(
             'transactions',
             'totalProducts',
@@ -34,94 +32,205 @@ class AdminController extends Controller
         ));
     }
 
-    // FUNGSI 2: Memperbarui Status Pesanan (Pending -> Paid / Shipped) (P8)
     public function updateStatus(Request $request, int|string $id): RedirectResponse
     {
-        // A. Cari baris transaksi berdasarkan ID yang dikirim dari tabel Admin
         $transaction = Transaction::findOrFail($id);
 
-        // B. Perbarui (UPDATE) kolom 'status' di MySQL sesuai tombol yang diklik Admin
+        $oldStatus = $transaction->status;
+        $newStatus = $request->status;
+
+        // Jika diubah menjadi Cancelled dari Pending, kembalikan stok
+        if ($newStatus === 'Cancelled' && $oldStatus === 'Pending') {
+            if ($transaction->items()->count() > 0) {
+                foreach ($transaction->items as $item) {
+                    $item->product?->increment('stock', $item->quantity);
+                }
+            } else {
+                $p = Product::find($transaction->product_id);
+                $p?->increment('stock', $transaction->quantity);
+            }
+        }
+
         $transaction->update([
-            'status' => $request->status,
+            'status' => $newStatus,
         ]);
 
-        // C. Kembalikan ke halaman tabel Admin sambil mengirim notifikasi Flash Session
         return back()->with(
             'success',
-            'Status pesanan ' . $transaction->invoice_code . ' atas nama ' . $transaction->customer_name . ' berhasil diubah menjadi: ' . $request->status
+            'Status pesanan '.$transaction->invoice_code.' atas nama '.$transaction->customer_name.' berhasil diubah menjadi: '.$newStatus
         );
     }
 
     // =========================================================================
-    // MATERI PERTEMUAN 9: MANAJEMEN PRODUK & UPLOAD FILE GAMBAR
+    // FITUR INOVASI P12: EKSPOR LAPORAN PENJUALAN (CSV, EXCEL, & PDF)
     // =========================================================================
 
-    // FUNGSI 3: Menampilkan Daftar Katalog Produk di Seller Center (P9)
+    /**
+     * Ekspor Laporan Penjualan ke Format CSV
+     */
+    public function exportCsv(): StreamedResponse
+    {
+        $fileName = 'laporan_penjualan_vovoi_'.date('Y-m-d_His').'.csv';
+        $transactions = Transaction::latest()->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$fileName}\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $callback = function () use ($transactions) {
+            $file = fopen('php://output', 'w');
+            // Menulis UTF-8 BOM agar Excel membaca karakter dengan benar
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            // Header Kolom
+            fputcsv($file, [
+                'No.',
+                'No Invoice',
+                'Tanggal & Waktu',
+                'Nama Pembeli',
+                'No Telepon',
+                'Alamat Pengiriman',
+                'Produk Dipesan',
+                'Jumlah Qty',
+                'Kurir',
+                'Ongkir (Rp)',
+                'Kode Voucher',
+                'Diskon (Rp)',
+                'Total Bayar (Rp)',
+                'Status Pesanan',
+            ]);
+
+            foreach ($transactions as $index => $t) {
+                fputcsv($file, [
+                    $index + 1,
+                    $t->invoice_code,
+                    $t->created_at ? $t->created_at->format('Y-m-d H:i:s') : '-',
+                    $t->customer_name,
+                    $t->customer_phone,
+                    $t->customer_address,
+                    $t->product_name,
+                    $t->quantity,
+                    $t->courier,
+                    $t->shipping_cost,
+                    $t->voucher_code ?: '-',
+                    $t->discount_amount ?: 0,
+                    $t->total_amount,
+                    $t->status,
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Ekspor Laporan Penjualan ke Format Excel (Spreadsheet CSV)
+     */
+    public function exportExcel(): StreamedResponse
+    {
+        $fileName = 'rekap_penjualan_vovoi_'.date('Y-m-d').'.csv';
+
+        return $this->exportCsv();
+    }
+
+    /**
+     * Ekspor Laporan Penjualan ke Format PDF / Halaman Cetak Siap Print
+     */
+    public function exportPdf(): View
+    {
+        $transactions = Transaction::latest()->get();
+        $totalOrders = $transactions->count();
+        $paidOrders = $transactions->where('status', 'Paid')->count();
+        $shippedOrders = $transactions->where('status', 'Shipped')->count();
+        $pendingOrders = $transactions->where('status', 'Pending')->count();
+        $cancelledOrders = $transactions->where('status', 'Cancelled')->count();
+        $totalRevenue = $transactions->where('status', '!=', 'Cancelled')->sum('total_amount');
+
+        return view('admin.report_pdf', compact(
+            'transactions',
+            'totalOrders',
+            'paidOrders',
+            'shippedOrders',
+            'pendingOrders',
+            'cancelledOrders',
+            'totalRevenue'
+        ));
+    }
+
+    // =========================================================================
+    // MANAJEMEN PRODUK & UPLOAD FILE GAMBAR & STOK & KATEGORI
+    // =========================================================================
+
     public function products(): View
     {
-        // Mengambil seluruh produk diurutkan dari yang terbaru ditambahkan
-        $products = Product::latest()->get();
+        $products = Product::with('category')->latest()->get();
 
         return view('admin.products', compact('products'));
     }
 
-    // FUNGSI 4: Menampilkan Formulir Tambah Produk Baru (P9)
     public function createProduct(): View
     {
-        return view('admin.create_product');
+        $categories = Category::all();
+
+        return view('admin.create_product', compact('categories'));
     }
 
-    // FUNGSI 5: Memvalidasi Input, Mengunggah File Foto, & Menyimpan Produk ke MySQL (P9)
     public function storeProduct(Request $request): RedirectResponse
     {
-        // A. Validasi ketahanan data dan keamanan file gambar (Maksimal 2MB / 2048 KB)
         $request->validate([
             'name' => 'required|string|max:150',
             'price' => 'required|numeric|min:100',
+            'stock' => 'nullable|integer|min:0',
+            'category_id' => 'nullable|exists:categories,id',
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        // B. Proses penamaan unik dan pemindahan file foto ke folder public/assets/images
         $imageName = null;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-
-            // Membuat nama unik: gabungan detik saat ini + nama asli file (tanpa spasi)
-            $imageName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
-
-            // Pindahkan fisik file ke folder public/assets/images
+            $imageName = time().'_'.str_replace(' ', '_', $file->getClientOriginalName());
             $file->move(public_path('assets/images'), $imageName);
         }
 
-        // C. Simpan baris data produk baru ke tabel products di MySQL
         Product::create([
+            'category_id' => $request->category_id,
             'name' => $request->name,
             'price' => $request->price,
+            'stock' => $request->input('stock', 10),
             'description' => $request->description,
             'image' => $imageName,
         ]);
 
-        // D. Arahkan kembali ke halaman Daftar Produk Admin dengan notifikasi sukses
         return redirect('/admin/products')->with(
             'success',
-            'Produk "' . $request->name . '" berhasil ditambahkan dan langsung tayang di etalase toko!'
+            'Produk "'.$request->name.'" berhasil ditambahkan dan langsung tayang di etalase toko!'
         );
     }
 
-    public function editProduct($id)
+    public function editProduct(int|string $id): View
     {
         $product = Product::findOrFail($id);
-        return view('admin.edit_product', compact('product'));
+        $categories = Category::all();
+
+        return view('admin.edit_product', compact('product', 'categories'));
     }
 
-    public function updateProduct(Request $request, $id)
+    public function updateProduct(Request $request, int|string $id): RedirectResponse
     {
         $product = Product::findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:150',
             'price' => 'required|numeric|min:100',
+            'stock' => 'nullable|integer|min:0',
+            'category_id' => 'nullable|exists:categories,id',
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
@@ -129,42 +238,44 @@ class AdminController extends Controller
         $imageName = $product->image;
 
         if ($request->hasFile('image')) {
-            if ($product->image && file_exists(public_path('assets/images/' . $product->image))) {
-                unlink(public_path('assets/images/' . $product->image));
+            if ($product->image && file_exists(public_path('assets/images/'.$product->image))) {
+                @unlink(public_path('assets/images/'.$product->image));
             }
 
             $file = $request->file('image');
-            $imageName = time() . '_' . str_replace(' ', '_', $file->getClientOriginalName());
+            $imageName = time().'_'.str_replace(' ', '_', $file->getClientOriginalName());
             $file->move(public_path('assets/images'), $imageName);
         }
 
         $product->update([
+            'category_id' => $request->category_id,
             'name' => $request->name,
             'price' => $request->price,
+            'stock' => $request->input('stock', $product->stock),
             'description' => $request->description,
             'image' => $imageName,
         ]);
 
         return redirect('/admin/products')->with(
             'success',
-            'Perubahan pada produk "' . $product->name . '" berhasil disimpan!'
+            'Perubahan pada produk "'.$product->name.'" berhasil disimpan!'
         );
     }
 
-    public function deleteProduct($id)
+    public function deleteProduct(int|string $id): RedirectResponse
     {
         $product = Product::findOrFail($id);
         $deletedName = $product->name;
 
-        if ($product->image && file_exists(public_path('assets/images/' . $product->image))) {
-            unlink(public_path('assets/images/' . $product->image));
+        if ($product->image && file_exists(public_path('assets/images/'.$product->image))) {
+            @unlink(public_path('assets/images/'.$product->image));
         }
 
         $product->delete();
 
         return redirect('/admin/products')->with(
             'success',
-            'Produk "' . $product->name . '" berhasil dihapus dari etalase.'
+            'Produk "'.$deletedName.'" berhasil dihapus dari etalase.'
         );
     }
 }
