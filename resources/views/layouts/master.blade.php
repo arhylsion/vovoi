@@ -313,7 +313,7 @@
                     </a>
                 @else
                     <a href="/profile" class="nav-item" style="color: #0B5ED7; font-weight: 700;">
-                        👤 Profil Saya
+                        Halo, {{ Auth::user()->name }}
                     </a>
                 @endif
                 <form action="/logout" method="POST" style="margin: 0; display: inline;">
@@ -323,6 +323,9 @@
                     </button>
                 </form>
             @else
+                <a href="/register" class="nav-item" style="font-size: 13px; font-weight: 600; color: #475569; text-decoration: none; padding: 6px 10px;">
+                    Daftar
+                </a>
                 <a href="/login" class="nav-seller-btn">
                     Login &rarr;
                 </a>

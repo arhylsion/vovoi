@@ -14,9 +14,17 @@
       <li>
         <a href="/katalog" class="v-nav-link">Support</a>
       </li>
-      <li>
-        <a href="/admin/products" class="v-nav-link" style="color: #0B5ED7; font-weight: 700;">⚙️ Seller Center</a>
-      </li>
+      @auth
+        @if(Auth::user()->isAdmin())
+          <li>
+            <a href="/admin/products" class="v-nav-link" style="color: #0B5ED7; font-weight: 700;">⚙️ Seller Center</a>
+          </li>
+        @else
+          <li>
+            <a href="/profile" class="v-nav-link" style="color: #0B5ED7; font-weight: 700;">Halo, {{ Auth::user()->name }}</a>
+          </li>
+        @endif
+      @endauth
     </ul>
 
     <div class="v-nav-actions">

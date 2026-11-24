@@ -1,0 +1,394 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2460 1620" width="2460" height="1620" style="background-color: #f8fafc; font-family: Segoe UI, -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;">
+<defs>
+  <filter id="card-shadow" x="-3%" y="-3%" width="106%" height="110%"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.06"/></filter>
+  <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#334155"/></marker>
+</defs>
+<rect width="100%" height="85" fill="#0f172a"/>
+<text x="60" y="40" fill="#ffffff" font-size="24" font-weight="bold">VOVOI E-COMMERCE</text>
+<text x="60" y="66" fill="#94a3b8" font-size="14">Entity-Relationship Diagram (ERD) Schema - Laravel Database Architecture</text>
+<polyline points="270,382 270,560" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" /><g><rect x="277" y="458" width="176" height="20" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="285" y="473" fill="#0f172a" font-size="11" font-weight="bold">1 : N (nullOnDelete)</text></g>
+<polyline points="2010,438 2010,560" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" /><g><rect x="2017" y="486" width="176" height="20" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="2025" y="501" fill="#0f172a" font-size="11" font-weight="bold">1 : N (voucher_code)</text></g>
+<polyline points="590,614 750,614 750,710 940,710" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" /><g><rect x="612" y="589" width="56" height="20" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="620" y="604" fill="#0f172a" font-size="11" font-weight="bold">1 : N</text></g>
+<polyline points="1830,614 1630,614 1630,682 1460,682" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" /><g><rect x="1652" y="589" width="136" height="20" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="1660" y="604" fill="#0f172a" font-size="11" font-weight="bold">1 : N (cascade)</text></g>
+<polyline points="1460,194 1730,194 1730,670 1830,670" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" /><g><rect x="1482" y="195" width="176" height="20" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="1490" y="210" fill="#0f172a" font-size="11" font-weight="bold">1 : N (nullOnDelete)</text></g>
+<polyline points="940,306 850,306 850,1218 940,1218" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" /><g><rect x="852" y="749" width="56" height="20" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="860" y="764" fill="#0f172a" font-size="11" font-weight="bold">1 : N</text></g>
+<polyline points="590,670 670,670 670,1190 940,1190" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" /><g><rect x="607" y="671" width="136" height="20" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="615" y="686" fill="#0f172a" font-size="11" font-weight="bold">1 : N (cascade)</text></g>
+<polyline points="1830,1006 1540,1006 1540,1162 1460,1162" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arrow)" /><g><rect x="1652" y="981" width="136" height="20" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1"/><text x="1660" y="996" fill="#0f172a" font-size="11" font-weight="bold">1 : N (cascade)</text></g>
+<g filter="url(#card-shadow)">
+  <rect x="90" y="140" width="500" height="242" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <path d="M 90 146 Q 90 140 96 140 L 584 140 Q 590 140 590 146 L 590 180 L 90 180 Z" fill="#1e293b"/>
+  <text x="106" y="165" fill="#ffffff" font-size="15" font-weight="bold">categories</text>
+  <text x="520" y="164" fill="#94a3b8" font-size="11">[TABLE]</text>
+  <rect x="100" y="184" width="32" height="18" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="106" y="197" fill="#92400e" font-size="10" font-weight="bold">PK</text>
+  <text x="142" y="198" fill="#0f172a" font-size="13" font-weight="bold">id</text>
+  <text x="320" y="198" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="480" y="198" fill="#94a3b8" font-size="12">Primary Key</text>
+  <rect x="91" y="208" width="498" height="28" fill="#f8fafc"/>
+  <circle cx="116" cy="221" r="2" fill="#cbd5e1"/>
+  <text x="142" y="226" fill="#0f172a" font-size="13" font-weight="normal">name</text>
+  <text x="320" y="226" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="480" y="226" fill="#94a3b8" font-size="12">Nama Kategori</text>
+  <rect x="100" y="240" width="32" height="18" rx="3" fill="#f3e8ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="106" y="253" fill="#581c87" font-size="10" font-weight="bold">UK</text>
+  <text x="142" y="254" fill="#0f172a" font-size="13" font-weight="normal">slug</text>
+  <text x="320" y="254" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="480" y="254" fill="#94a3b8" font-size="12">Unique URL Slug</text>
+  <rect x="91" y="264" width="498" height="28" fill="#f8fafc"/>
+  <circle cx="116" cy="277" r="2" fill="#cbd5e1"/>
+  <text x="142" y="282" fill="#0f172a" font-size="13" font-weight="normal">description</text>
+  <text x="320" y="282" fill="#475569" font-family="Consolas, monospace" font-size="12">TEXT</text>
+  <text x="480" y="282" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="116" cy="305" r="2" fill="#cbd5e1"/>
+  <text x="142" y="310" fill="#0f172a" font-size="13" font-weight="normal">icon</text>
+  <text x="320" y="310" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="480" y="310" fill="#94a3b8" font-size="12">Nullable</text>
+  <rect x="91" y="320" width="498" height="28" fill="#f8fafc"/>
+  <circle cx="116" cy="333" r="2" fill="#cbd5e1"/>
+  <text x="142" y="338" fill="#0f172a" font-size="13" font-weight="normal">created_at</text>
+  <text x="320" y="338" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="480" y="338" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="116" cy="361" r="2" fill="#cbd5e1"/>
+  <text x="142" y="366" fill="#0f172a" font-size="13" font-weight="normal">updated_at</text>
+  <text x="320" y="366" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="480" y="366" fill="#94a3b8" font-size="12">Nullable</text>
+</g>
+<g filter="url(#card-shadow)">
+  <rect x="90" y="560" width="500" height="298" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <path d="M 90 566 Q 90 560 96 560 L 584 560 Q 590 560 590 566 L 590 600 L 90 600 Z" fill="#1e293b"/>
+  <text x="106" y="585" fill="#ffffff" font-size="15" font-weight="bold">products</text>
+  <text x="520" y="584" fill="#94a3b8" font-size="11">[TABLE]</text>
+  <rect x="100" y="604" width="32" height="18" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="106" y="617" fill="#92400e" font-size="10" font-weight="bold">PK</text>
+  <text x="142" y="618" fill="#0f172a" font-size="13" font-weight="bold">id</text>
+  <text x="320" y="618" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="480" y="618" fill="#94a3b8" font-size="12">Primary Key</text>
+  <rect x="91" y="628" width="498" height="28" fill="#f8fafc"/>
+  <rect x="100" y="632" width="32" height="18" rx="3" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="106" y="645" fill="#1e3a8a" font-size="10" font-weight="bold">FK</text>
+  <text x="142" y="646" fill="#0f172a" font-size="13" font-weight="normal">category_id</text>
+  <text x="320" y="646" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="480" y="646" fill="#94a3b8" font-size="12">categories.id</text>
+  <circle cx="116" cy="669" r="2" fill="#cbd5e1"/>
+  <text x="142" y="674" fill="#0f172a" font-size="13" font-weight="normal">name</text>
+  <text x="320" y="674" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="480" y="674" fill="#94a3b8" font-size="12">Nama Produk</text>
+  <rect x="91" y="684" width="498" height="28" fill="#f8fafc"/>
+  <circle cx="116" cy="697" r="2" fill="#cbd5e1"/>
+  <text x="142" y="702" fill="#0f172a" font-size="13" font-weight="normal">description</text>
+  <text x="320" y="702" fill="#475569" font-family="Consolas, monospace" font-size="12">TEXT</text>
+  <text x="480" y="702" fill="#94a3b8" font-size="12">Deskripsi</text>
+  <circle cx="116" cy="725" r="2" fill="#cbd5e1"/>
+  <text x="142" y="730" fill="#0f172a" font-size="13" font-weight="normal">price</text>
+  <text x="320" y="730" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="480" y="730" fill="#94a3b8" font-size="12">Harga Satuan</text>
+  <rect x="91" y="740" width="498" height="28" fill="#f8fafc"/>
+  <circle cx="116" cy="753" r="2" fill="#cbd5e1"/>
+  <text x="142" y="758" fill="#0f172a" font-size="13" font-weight="normal">stock</text>
+  <text x="320" y="758" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="480" y="758" fill="#94a3b8" font-size="12">Default: 10</text>
+  <circle cx="116" cy="781" r="2" fill="#cbd5e1"/>
+  <text x="142" y="786" fill="#0f172a" font-size="13" font-weight="normal">image</text>
+  <text x="320" y="786" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="480" y="786" fill="#94a3b8" font-size="12">Nullable</text>
+  <rect x="91" y="796" width="498" height="28" fill="#f8fafc"/>
+  <circle cx="116" cy="809" r="2" fill="#cbd5e1"/>
+  <text x="142" y="814" fill="#0f172a" font-size="13" font-weight="normal">created_at</text>
+  <text x="320" y="814" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="480" y="814" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="116" cy="837" r="2" fill="#cbd5e1"/>
+  <text x="142" y="842" fill="#0f172a" font-size="13" font-weight="normal">updated_at</text>
+  <text x="320" y="842" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="480" y="842" fill="#94a3b8" font-size="12">Nullable</text>
+</g>
+<g filter="url(#card-shadow)">
+  <rect x="940" y="140" width="520" height="354" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <path d="M 940 146 Q 940 140 946 140 L 1454 140 Q 1460 140 1460 146 L 1460 180 L 940 180 Z" fill="#1e293b"/>
+  <text x="956" y="165" fill="#ffffff" font-size="15" font-weight="bold">users</text>
+  <text x="1390" y="164" fill="#94a3b8" font-size="11">[TABLE]</text>
+  <rect x="950" y="184" width="32" height="18" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="956" y="197" fill="#92400e" font-size="10" font-weight="bold">PK</text>
+  <text x="992" y="198" fill="#0f172a" font-size="13" font-weight="bold">id</text>
+  <text x="1170" y="198" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="1330" y="198" fill="#94a3b8" font-size="12">Primary Key</text>
+  <rect x="941" y="208" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="221" r="2" fill="#cbd5e1"/>
+  <text x="992" y="226" fill="#0f172a" font-size="13" font-weight="normal">name</text>
+  <text x="1170" y="226" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="1330" y="226" fill="#94a3b8" font-size="12">Nama Pengguna</text>
+  <rect x="950" y="240" width="32" height="18" rx="3" fill="#f3e8ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="956" y="253" fill="#581c87" font-size="10" font-weight="bold">UK</text>
+  <text x="992" y="254" fill="#0f172a" font-size="13" font-weight="normal">email</text>
+  <text x="1170" y="254" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="1330" y="254" fill="#94a3b8" font-size="12">Unique Email</text>
+  <rect x="941" y="264" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="277" r="2" fill="#cbd5e1"/>
+  <text x="992" y="282" fill="#0f172a" font-size="13" font-weight="normal">password</text>
+  <text x="1170" y="282" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="1330" y="282" fill="#94a3b8" font-size="12">Hash Sandi</text>
+  <circle cx="966" cy="305" r="2" fill="#cbd5e1"/>
+  <text x="992" y="310" fill="#0f172a" font-size="13" font-weight="normal">phone</text>
+  <text x="1170" y="310" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="1330" y="310" fill="#94a3b8" font-size="12">Nullable</text>
+  <rect x="941" y="320" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="333" r="2" fill="#cbd5e1"/>
+  <text x="992" y="338" fill="#0f172a" font-size="13" font-weight="normal">address</text>
+  <text x="1170" y="338" fill="#475569" font-family="Consolas, monospace" font-size="12">TEXT</text>
+  <text x="1330" y="338" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="966" cy="361" r="2" fill="#cbd5e1"/>
+  <text x="992" y="366" fill="#0f172a" font-size="13" font-weight="normal">role</text>
+  <text x="1170" y="366" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="1330" y="366" fill="#94a3b8" font-size="12">Def: 'customer'</text>
+  <rect x="941" y="376" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="389" r="2" fill="#cbd5e1"/>
+  <text x="992" y="394" fill="#0f172a" font-size="13" font-weight="normal">email_verified_at</text>
+  <text x="1170" y="394" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="1330" y="394" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="966" cy="417" r="2" fill="#cbd5e1"/>
+  <text x="992" y="422" fill="#0f172a" font-size="13" font-weight="normal">remember_token</text>
+  <text x="1170" y="422" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(100)</text>
+  <text x="1330" y="422" fill="#94a3b8" font-size="12">Nullable</text>
+  <rect x="941" y="432" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="445" r="2" fill="#cbd5e1"/>
+  <text x="992" y="450" fill="#0f172a" font-size="13" font-weight="normal">created_at</text>
+  <text x="1170" y="450" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="1330" y="450" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="966" cy="473" r="2" fill="#cbd5e1"/>
+  <text x="992" y="478" fill="#0f172a" font-size="13" font-weight="normal">updated_at</text>
+  <text x="1170" y="478" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="1330" y="478" fill="#94a3b8" font-size="12">Nullable</text>
+</g>
+<g filter="url(#card-shadow)">
+  <rect x="940" y="600" width="520" height="298" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <path d="M 940 606 Q 940 600 946 600 L 1454 600 Q 1460 600 1460 606 L 1460 640 L 940 640 Z" fill="#1e293b"/>
+  <text x="956" y="625" fill="#ffffff" font-size="15" font-weight="bold">transaction_items</text>
+  <text x="1390" y="624" fill="#94a3b8" font-size="11">[TABLE]</text>
+  <rect x="950" y="644" width="32" height="18" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="956" y="657" fill="#92400e" font-size="10" font-weight="bold">PK</text>
+  <text x="992" y="658" fill="#0f172a" font-size="13" font-weight="bold">id</text>
+  <text x="1170" y="658" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="1330" y="658" fill="#94a3b8" font-size="12">Primary Key</text>
+  <rect x="941" y="668" width="518" height="28" fill="#f8fafc"/>
+  <rect x="950" y="672" width="32" height="18" rx="3" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="956" y="685" fill="#1e3a8a" font-size="10" font-weight="bold">FK</text>
+  <text x="992" y="686" fill="#0f172a" font-size="13" font-weight="normal">transaction_id</text>
+  <text x="1170" y="686" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="1330" y="686" fill="#94a3b8" font-size="12">transactions.id</text>
+  <rect x="950" y="700" width="32" height="18" rx="3" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="956" y="713" fill="#1e3a8a" font-size="10" font-weight="bold">FK</text>
+  <text x="992" y="714" fill="#0f172a" font-size="13" font-weight="normal">product_id</text>
+  <text x="1170" y="714" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="1330" y="714" fill="#94a3b8" font-size="12">products.id</text>
+  <rect x="941" y="724" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="737" r="2" fill="#cbd5e1"/>
+  <text x="992" y="742" fill="#0f172a" font-size="13" font-weight="normal">product_name</text>
+  <text x="1170" y="742" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="1330" y="742" fill="#94a3b8" font-size="12">Snapshot</text>
+  <circle cx="966" cy="765" r="2" fill="#cbd5e1"/>
+  <text x="992" y="770" fill="#0f172a" font-size="13" font-weight="normal">price</text>
+  <text x="1170" y="770" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="1330" y="770" fill="#94a3b8" font-size="12">Snapshot</text>
+  <rect x="941" y="780" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="793" r="2" fill="#cbd5e1"/>
+  <text x="992" y="798" fill="#0f172a" font-size="13" font-weight="normal">quantity</text>
+  <text x="1170" y="798" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="1330" y="798" fill="#94a3b8" font-size="12">Jumlah Beli</text>
+  <circle cx="966" cy="821" r="2" fill="#cbd5e1"/>
+  <text x="992" y="826" fill="#0f172a" font-size="13" font-weight="normal">subtotal</text>
+  <text x="1170" y="826" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="1330" y="826" fill="#94a3b8" font-size="12">Subtotal Item</text>
+  <rect x="941" y="836" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="849" r="2" fill="#cbd5e1"/>
+  <text x="992" y="854" fill="#0f172a" font-size="13" font-weight="normal">created_at</text>
+  <text x="1170" y="854" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="1330" y="854" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="966" cy="877" r="2" fill="#cbd5e1"/>
+  <text x="992" y="882" fill="#0f172a" font-size="13" font-weight="normal">updated_at</text>
+  <text x="1170" y="882" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="1330" y="882" fill="#94a3b8" font-size="12">Nullable</text>
+</g>
+<g filter="url(#card-shadow)">
+  <rect x="940" y="1080" width="520" height="298" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <path d="M 940 1086 Q 940 1080 946 1080 L 1454 1080 Q 1460 1080 1460 1086 L 1460 1120 L 940 1120 Z" fill="#1e293b"/>
+  <text x="956" y="1105" fill="#ffffff" font-size="15" font-weight="bold">reviews</text>
+  <text x="1390" y="1104" fill="#94a3b8" font-size="11">[TABLE]</text>
+  <rect x="950" y="1124" width="32" height="18" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="956" y="1137" fill="#92400e" font-size="10" font-weight="bold">PK</text>
+  <text x="992" y="1138" fill="#0f172a" font-size="13" font-weight="bold">id</text>
+  <text x="1170" y="1138" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="1330" y="1138" fill="#94a3b8" font-size="12">Primary Key</text>
+  <rect x="941" y="1148" width="518" height="28" fill="#f8fafc"/>
+  <rect x="950" y="1152" width="32" height="18" rx="3" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="956" y="1165" fill="#1e3a8a" font-size="10" font-weight="bold">FK</text>
+  <text x="992" y="1166" fill="#0f172a" font-size="13" font-weight="normal">transaction_id</text>
+  <text x="1170" y="1166" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="1330" y="1166" fill="#94a3b8" font-size="12">transactions.id</text>
+  <rect x="950" y="1180" width="32" height="18" rx="3" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="956" y="1193" fill="#1e3a8a" font-size="10" font-weight="bold">FK</text>
+  <text x="992" y="1194" fill="#0f172a" font-size="13" font-weight="normal">product_id</text>
+  <text x="1170" y="1194" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="1330" y="1194" fill="#94a3b8" font-size="12">products.id</text>
+  <rect x="941" y="1204" width="518" height="28" fill="#f8fafc"/>
+  <rect x="950" y="1208" width="32" height="18" rx="3" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="956" y="1221" fill="#1e3a8a" font-size="10" font-weight="bold">FK</text>
+  <text x="992" y="1222" fill="#0f172a" font-size="13" font-weight="normal">user_id</text>
+  <text x="1170" y="1222" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="1330" y="1222" fill="#94a3b8" font-size="12">users.id</text>
+  <circle cx="966" cy="1245" r="2" fill="#cbd5e1"/>
+  <text x="992" y="1250" fill="#0f172a" font-size="13" font-weight="normal">customer_name</text>
+  <text x="1170" y="1250" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="1330" y="1250" fill="#94a3b8" font-size="12">Nama Pengulas</text>
+  <rect x="941" y="1260" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="1273" r="2" fill="#cbd5e1"/>
+  <text x="992" y="1278" fill="#0f172a" font-size="13" font-weight="normal">rating</text>
+  <text x="1170" y="1278" fill="#475569" font-family="Consolas, monospace" font-size="12">TINYINT UNSIGNED</text>
+  <text x="1330" y="1278" fill="#94a3b8" font-size="12">Rating (1 - 5)</text>
+  <circle cx="966" cy="1301" r="2" fill="#cbd5e1"/>
+  <text x="992" y="1306" fill="#0f172a" font-size="13" font-weight="normal">comment</text>
+  <text x="1170" y="1306" fill="#475569" font-family="Consolas, monospace" font-size="12">TEXT</text>
+  <text x="1330" y="1306" fill="#94a3b8" font-size="12">Isi Ulasan</text>
+  <rect x="941" y="1316" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="966" cy="1329" r="2" fill="#cbd5e1"/>
+  <text x="992" y="1334" fill="#0f172a" font-size="13" font-weight="normal">created_at</text>
+  <text x="1170" y="1334" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="1330" y="1334" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="966" cy="1357" r="2" fill="#cbd5e1"/>
+  <text x="992" y="1362" fill="#0f172a" font-size="13" font-weight="normal">updated_at</text>
+  <text x="1170" y="1362" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="1330" y="1362" fill="#94a3b8" font-size="12">Nullable</text>
+</g>
+<g filter="url(#card-shadow)">
+  <rect x="1830" y="140" width="520" height="298" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <path d="M 1830 146 Q 1830 140 1836 140 L 2344 140 Q 2350 140 2350 146 L 2350 180 L 1830 180 Z" fill="#1e293b"/>
+  <text x="1846" y="165" fill="#ffffff" font-size="15" font-weight="bold">vouchers</text>
+  <text x="2280" y="164" fill="#94a3b8" font-size="11">[TABLE]</text>
+  <rect x="1840" y="184" width="32" height="18" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="1846" y="197" fill="#92400e" font-size="10" font-weight="bold">PK</text>
+  <text x="1882" y="198" fill="#0f172a" font-size="13" font-weight="bold">id</text>
+  <text x="2060" y="198" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="2220" y="198" fill="#94a3b8" font-size="12">Primary Key</text>
+  <rect x="1831" y="208" width="518" height="28" fill="#f8fafc"/>
+  <rect x="1840" y="212" width="32" height="18" rx="3" fill="#f3e8ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="1846" y="225" fill="#581c87" font-size="10" font-weight="bold">UK</text>
+  <text x="1882" y="226" fill="#0f172a" font-size="13" font-weight="normal">code</text>
+  <text x="2060" y="226" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="226" fill="#94a3b8" font-size="12">Unique Coupon</text>
+  <circle cx="1856" cy="249" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="254" fill="#0f172a" font-size="13" font-weight="normal">name</text>
+  <text x="2060" y="254" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="254" fill="#94a3b8" font-size="12">Nama Voucher</text>
+  <rect x="1831" y="264" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="277" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="282" fill="#0f172a" font-size="13" font-weight="normal">discount_type</text>
+  <text x="2060" y="282" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="282" fill="#94a3b8" font-size="12">fixed / percent</text>
+  <circle cx="1856" cy="305" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="310" fill="#0f172a" font-size="13" font-weight="normal">discount_amount</text>
+  <text x="2060" y="310" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="2220" y="310" fill="#94a3b8" font-size="12">Nilai Diskon</text>
+  <rect x="1831" y="320" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="333" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="338" fill="#0f172a" font-size="13" font-weight="normal">min_order</text>
+  <text x="2060" y="338" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="2220" y="338" fill="#94a3b8" font-size="12">Default: 0</text>
+  <circle cx="1856" cy="361" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="366" fill="#0f172a" font-size="13" font-weight="normal">is_active</text>
+  <text x="2060" y="366" fill="#475569" font-family="Consolas, monospace" font-size="12">BOOLEAN</text>
+  <text x="2220" y="366" fill="#94a3b8" font-size="12">Default: true</text>
+  <rect x="1831" y="376" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="389" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="394" fill="#0f172a" font-size="13" font-weight="normal">created_at</text>
+  <text x="2060" y="394" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="2220" y="394" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="1856" cy="417" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="422" fill="#0f172a" font-size="13" font-weight="normal">updated_at</text>
+  <text x="2060" y="422" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="2220" y="422" fill="#94a3b8" font-size="12">Nullable</text>
+</g>
+<g filter="url(#card-shadow)">
+  <rect x="1830" y="560" width="520" height="522" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <path d="M 1830 566 Q 1830 560 1836 560 L 2344 560 Q 2350 560 2350 566 L 2350 600 L 1830 600 Z" fill="#1e293b"/>
+  <text x="1846" y="585" fill="#ffffff" font-size="15" font-weight="bold">transactions</text>
+  <text x="2280" y="584" fill="#94a3b8" font-size="11">[TABLE]</text>
+  <rect x="1840" y="604" width="32" height="18" rx="3" fill="#fef3c7" stroke="#d97706" stroke-width="1"/>
+  <text x="1846" y="617" fill="#92400e" font-size="10" font-weight="bold">PK</text>
+  <text x="1882" y="618" fill="#0f172a" font-size="13" font-weight="bold">id</text>
+  <text x="2060" y="618" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="2220" y="618" fill="#94a3b8" font-size="12">Primary Key</text>
+  <rect x="1831" y="628" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="641" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="646" fill="#0f172a" font-size="13" font-weight="normal">invoice_code</text>
+  <text x="2060" y="646" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="646" fill="#94a3b8" font-size="12">INV-2026-XXXX</text>
+  <rect x="1840" y="660" width="32" height="18" rx="3" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="1846" y="673" fill="#1e3a8a" font-size="10" font-weight="bold">FK</text>
+  <text x="1882" y="674" fill="#0f172a" font-size="13" font-weight="normal">user_id</text>
+  <text x="2060" y="674" fill="#475569" font-family="Consolas, monospace" font-size="12">BIGINT UNSIGNED</text>
+  <text x="2220" y="674" fill="#94a3b8" font-size="12">users.id</text>
+  <rect x="1831" y="684" width="518" height="28" fill="#f8fafc"/>
+  <rect x="1840" y="688" width="32" height="18" rx="3" fill="#eff6ff" stroke="#60a5fa" stroke-width="1"/>
+  <text x="1846" y="701" fill="#1e3a8a" font-size="10" font-weight="bold">FK</text>
+  <text x="1882" y="702" fill="#0f172a" font-size="13" font-weight="normal">product_id</text>
+  <text x="2060" y="702" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="2220" y="702" fill="#94a3b8" font-size="12">products.id</text>
+  <circle cx="1856" cy="725" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="730" fill="#0f172a" font-size="13" font-weight="normal">product_name</text>
+  <text x="2060" y="730" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="730" fill="#94a3b8" font-size="12">Snapshot</text>
+  <rect x="1831" y="740" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="753" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="758" fill="#0f172a" font-size="13" font-weight="normal">customer_name</text>
+  <text x="2060" y="758" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="758" fill="#94a3b8" font-size="12">Nama Pembeli</text>
+  <circle cx="1856" cy="781" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="786" fill="#0f172a" font-size="13" font-weight="normal">customer_phone</text>
+  <text x="2060" y="786" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="786" fill="#94a3b8" font-size="12">No Telepon</text>
+  <rect x="1831" y="796" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="809" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="814" fill="#0f172a" font-size="13" font-weight="normal">customer_address</text>
+  <text x="2060" y="814" fill="#475569" font-family="Consolas, monospace" font-size="12">TEXT</text>
+  <text x="2220" y="814" fill="#94a3b8" font-size="12">Alamat Kirim</text>
+  <circle cx="1856" cy="837" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="842" fill="#0f172a" font-size="13" font-weight="normal">courier</text>
+  <text x="2060" y="842" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="842" fill="#94a3b8" font-size="12">Kurir</text>
+  <rect x="1831" y="852" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="865" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="870" fill="#0f172a" font-size="13" font-weight="normal">quantity</text>
+  <text x="2060" y="870" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="2220" y="870" fill="#94a3b8" font-size="12">Total Qty</text>
+  <circle cx="1856" cy="893" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="898" fill="#0f172a" font-size="13" font-weight="normal">shipping_cost</text>
+  <text x="2060" y="898" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="2220" y="898" fill="#94a3b8" font-size="12">Ongkos Kirim</text>
+  <rect x="1831" y="908" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="921" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="926" fill="#0f172a" font-size="13" font-weight="normal">voucher_code</text>
+  <text x="2060" y="926" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="926" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="1856" cy="949" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="954" fill="#0f172a" font-size="13" font-weight="normal">discount_amount</text>
+  <text x="2060" y="954" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="2220" y="954" fill="#94a3b8" font-size="12">Default: 0</text>
+  <rect x="1831" y="964" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="977" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="982" fill="#0f172a" font-size="13" font-weight="normal">total_amount</text>
+  <text x="2060" y="982" fill="#475569" font-family="Consolas, monospace" font-size="12">INTEGER</text>
+  <text x="2220" y="982" fill="#94a3b8" font-size="12">Total Bayar</text>
+  <circle cx="1856" cy="1005" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="1010" fill="#0f172a" font-size="13" font-weight="normal">status</text>
+  <text x="2060" y="1010" fill="#475569" font-family="Consolas, monospace" font-size="12">VARCHAR(255)</text>
+  <text x="2220" y="1010" fill="#94a3b8" font-size="12">Def: 'Pending'</text>
+  <rect x="1831" y="1020" width="518" height="28" fill="#f8fafc"/>
+  <circle cx="1856" cy="1033" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="1038" fill="#0f172a" font-size="13" font-weight="normal">created_at</text>
+  <text x="2060" y="1038" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="2220" y="1038" fill="#94a3b8" font-size="12">Nullable</text>
+  <circle cx="1856" cy="1061" r="2" fill="#cbd5e1"/>
+  <text x="1882" y="1066" fill="#0f172a" font-size="13" font-weight="normal">updated_at</text>
+  <text x="2060" y="1066" fill="#475569" font-family="Consolas, monospace" font-size="12">TIMESTAMP</text>
+  <text x="2220" y="1066" fill="#94a3b8" font-size="12">Nullable</text>
+</g>
+<text x="60" y="1595" fill="#64748b" font-size="13">Vovoi E-Commerce Data Schema Architecture | Generated with Laravel 11 / PHP 8.4</text>
+</svg>

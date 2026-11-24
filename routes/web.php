@@ -46,26 +46,30 @@ Route::post('/pesanan/{id}/batal', [ProductController::class, 'cancelOrder'])->n
 Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
 
 // =========================================================
-// JALUR AUTENTIKASI (LOGIN & LOGOUT)
+// JALUR AUTENTIKASI (LOGIN, REGISTER, & LOGOUT)
 // =========================================================
 
 Route::get('/login', [AuthController::class, 'showlogin'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // =========================================================
-// JALUR TERPROTEKSI MIDDLEWARE AUTH (CUSTOMER & ADMIN)
+// JALUR TERPROTEKSI CUSTOMER (AUTH)
 // =========================================================
 
 Route::middleware(['auth'])->group(function () {
     // Profil Customer (Ubah Nama, No HP, Alamat Default, Kata Sandi)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
 
-    // =====================================================
-    // SELLER CENTER (ADMINISTRATION PORTAL)
-    // =====================================================
+// =========================================================
+// JALUR SELLER CENTER (ADMINISTRATION PORTAL - KHUSUS ROLE ADMIN)
+// =========================================================
 
+Route::middleware(['auth', 'admin'])->group(function () {
     // Manajemen Pesanan & Ekspor Laporan
     Route::get('/admin/transactions', [AdminController::class, 'transactions'])->name('admin.transactions');
     Route::post('/admin/transactions/{id}/status', [AdminController::class, 'updateStatus'])->name('admin.transactions.status');
