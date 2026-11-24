@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        // 0. Ensure initial products exist
+        if (Product::count() === 0) {
+            $this->call(ProductSeeder::class);
+        }
+
         // 1. Admin Users
         User::updateOrCreate(
             ['email' => 'admin@vovoi.com'],
@@ -41,7 +46,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Sample Customer User
+        // Sample Customer User 1
         $customer = User::updateOrCreate(
             ['email' => 'customer@vovoi.com'],
             [
@@ -50,6 +55,18 @@ class DatabaseSeeder extends Seeder
                 'role' => 'customer',
                 'phone' => '08888221281',
                 'address' => 'Jl. Pajajaran No. 45, Baranangsiang, Kota Bogor',
+            ]
+        );
+
+        // Sample Customer User 2 (Untuk simulasi pengujian antar-pembeli)
+        $customer2 = User::updateOrCreate(
+            ['email' => 'customer2@vovoi.com'],
+            [
+                'name' => 'Siti Rahmawati',
+                'password' => Hash::make('password123'),
+                'role' => 'customer',
+                'phone' => '081345678901',
+                'address' => 'Jl. Ir. H. Juanda No. 12, Paledang, Kota Bogor',
             ]
         );
 
