@@ -16,19 +16,29 @@ class AdminController extends Controller
     // MANAJEMEN PESANAN MASUK & AGGREGATE QUERY
     // =========================================================================
 
-    public function transactions(): View
+    public function transactions(Request $request): View
     {
-        $transactions = Transaction::with(['items.product', 'reviews'])->latest()->get();
+        $query = Transaction::with(['items.product', 'reviews'])->latest();
+
+        if ($request->filled('status') && in_array($request->status, ['Pending', 'Paid', 'Shipped', 'Cancelled'])) {
+            $query->where('status', $request->status);
+        }
+
+        $transactions = $query->get();
 
         $totalProducts = Product::count();
         $totalTransactions = Transaction::count();
-        // P10 Checklist: Pesanan Pending tidak dihitung ke kartu omzet (hanya Paid, Shipped, Completed)
+        $pendingOrders = Transaction::where('status', 'Pending')->count();
+        $paidShippedOrders = Transaction::whereIn('status', ['Paid', 'Shipped', 'Completed'])->count();
+        // P10 & Modul 6: Pesanan Pending tidak dihitung ke kartu omzet (hanya Paid, Shipped, Completed)
         $totalRevenue = Transaction::whereIn('status', ['Paid', 'Shipped', 'Completed'])->sum('total_amount');
 
         return view('admin.transactions', compact(
             'transactions',
             'totalProducts',
             'totalTransactions',
+            'pendingOrders',
+            'paidShippedOrders',
             'totalRevenue'
         ));
     }
@@ -52,14 +62,46 @@ class AdminController extends Controller
             }
         }
 
-        $transaction->update([
-            'status' => $newStatus,
-        ]);
+        $updateData = ['status' => $newStatus];
+
+        // Isian nomor resi saat status diubah menjadi Shipped atau jika tracking_number diisi (Modul 6 & Matriks QA No. 11)
+        if ($request->filled('tracking_number')) {
+            $updateData['tracking_number'] = trim((string) $request->tracking_number);
+        } elseif ($newStatus === 'Shipped' && empty($transaction->tracking_number)) {
+            $updateData['tracking_number'] = strtoupper(substr($transaction->courier, 0, 3)).'-VOV-'.rand(100000, 999999);
+        }
+
+        $transaction->update($updateData);
 
         return back()->with(
             'success',
-            'Status pesanan '.$transaction->invoice_code.' atas nama '.$transaction->customer_name.' berhasil diubah menjadi: '.$newStatus
+            'Status pesanan '.$transaction->invoice_code.' atas nama '.$transaction->customer_name.' berhasil diubah menjadi: '.$newStatus.
+            ($transaction->tracking_number ? ' (No. Resi: '.$transaction->tracking_number.')' : '')
         );
+    }
+
+    public function deleteTransaction(int|string $id): RedirectResponse
+    {
+        $transaction = Transaction::findOrFail($id);
+        $code = $transaction->invoice_code;
+
+        // Kembalikan stok jika pesanan yang dihapus masih Pending
+        if ($transaction->status === 'Pending') {
+            if ($transaction->items()->count() > 0) {
+                foreach ($transaction->items as $item) {
+                    $item->product?->increment('stock', $item->quantity);
+                }
+            } else {
+                $p = Product::find($transaction->product_id);
+                $p?->increment('stock', $transaction->quantity);
+            }
+        }
+
+        $transaction->items()->delete();
+        $transaction->reviews()->delete();
+        $transaction->delete();
+
+        return back()->with('success', 'Pesanan '.$code.' berhasil dihapus dari sistem.');
     }
 
     // =========================================================================

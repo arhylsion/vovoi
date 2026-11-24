@@ -107,6 +107,23 @@
             font-size: 13px;
         }
 
+        @media (max-width: 992px) {
+            .topbar {
+                padding: 12px 20px;
+                height: auto;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .nav-menu {
+                overflow-x: auto;
+                max-width: 100%;
+                gap: 6px;
+            }
+            .container-admin {
+                padding: 20px 16px 48px;
+            }
+        }
+
         @media print {
             .topbar, .footer-admin, .no-print, button, form {
                 display: none !important;

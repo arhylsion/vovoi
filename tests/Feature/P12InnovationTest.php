@@ -91,9 +91,11 @@ class P12InnovationTest extends TestCase
 
     public function test_e_invoice_page_contains_print_trigger_and_print_styles(): void
     {
+        $customer = $this->getCustomer();
         $product = Product::firstOrFail();
         $transaction = Transaction::create([
             'invoice_code' => 'INV-2026-PRINT01',
+            'user_id' => $customer->id,
             'product_id' => $product->id,
             'product_name' => $product->name,
             'customer_name' => 'Cetak Tester',
@@ -106,7 +108,7 @@ class P12InnovationTest extends TestCase
             'status' => 'Pending',
         ]);
 
-        $response = $this->get('/berhasil/'.$transaction->id);
+        $response = $this->actingAs($customer)->get('/berhasil/'.$transaction->id);
 
         $response->assertStatus(200);
         $response->assertSee('window.print()', false);
@@ -190,6 +192,7 @@ class P12InnovationTest extends TestCase
 
     public function test_voucher_discount_is_applied_at_checkout(): void
     {
+        $customer = $this->getCustomer();
         $product = Product::where('stock', '>', 0)->firstOrFail();
 
         $voucher = Voucher::updateOrCreate(
@@ -213,7 +216,7 @@ class P12InnovationTest extends TestCase
             'voucher_code' => 'TESTVOUCHER50K',
         ];
 
-        $response = $this->post('/checkout/proses', $payload);
+        $response = $this->actingAs($customer)->post('/checkout/proses', $payload);
 
         $transaction = Transaction::where('customer_name', 'Voucher Buyer')->latest('id')->first();
         $this->assertNotNull($transaction);
@@ -224,7 +227,7 @@ class P12InnovationTest extends TestCase
         $this->assertEquals($expectedTotal, $transaction->total_amount);
 
         // Invoice displays discount
-        $invoiceResponse = $this->get('/berhasil/'.$transaction->id);
+        $invoiceResponse = $this->actingAs($customer)->get('/berhasil/'.$transaction->id);
         $invoiceResponse->assertStatus(200);
         $invoiceResponse->assertSee('Diskon Voucher');
         $invoiceResponse->assertSee('TESTVOUCHER50K');
@@ -239,6 +242,7 @@ class P12InnovationTest extends TestCase
 
     public function test_buyer_can_cancel_pending_order_and_restores_stock(): void
     {
+        $customer = $this->getCustomer();
         $product = Product::create([
             'name' => 'VOVOI Cancel Test Phone',
             'price' => 1000000,
@@ -247,7 +251,7 @@ class P12InnovationTest extends TestCase
         ]);
 
         // Purchase 2 units
-        $this->post('/checkout/proses', [
+        $this->actingAs($customer)->post('/checkout/proses', [
             'product_id' => $product->id,
             'customer_name' => 'Pembeli Batal',
             'customer_phone' => '0811223344',
@@ -263,7 +267,7 @@ class P12InnovationTest extends TestCase
         $this->assertEquals('Pending', $transaction->status);
 
         // Cancel order
-        $cancelResponse = $this->post('/pesanan/'.$transaction->id.'/batal');
+        $cancelResponse = $this->actingAs($customer)->post('/pesanan/'.$transaction->id.'/batal');
         $cancelResponse->assertSessionHas('success');
 
         $transaction->refresh();
@@ -274,7 +278,7 @@ class P12InnovationTest extends TestCase
         $this->assertEquals(5, $product->stock);
 
         // Attempting to cancel again should fail
-        $secondCancel = $this->post('/pesanan/'.$transaction->id.'/batal');
+        $secondCancel = $this->actingAs($customer)->post('/pesanan/'.$transaction->id.'/batal');
         $secondCancel->assertSessionHas('error');
 
         $transaction->delete();
@@ -312,6 +316,7 @@ class P12InnovationTest extends TestCase
 
     public function test_multi_product_cart_checkout_in_single_process(): void
     {
+        $customer = $this->getCustomer();
         $p1 = Product::create(['name' => 'Item Cart 1', 'price' => 100000, 'stock' => 10, 'description' => 'desc']);
         $p2 = Product::create(['name' => 'Item Cart 2', 'price' => 200000, 'stock' => 10, 'description' => 'desc']);
 
@@ -321,13 +326,13 @@ class P12InnovationTest extends TestCase
             $p2->id => ['id' => $p2->id, 'name' => $p2->name, 'price' => $p2->price, 'quantity' => 1],
         ]);
 
-        $checkoutPage = $this->get('/checkout');
+        $checkoutPage = $this->actingAs($customer)->get('/checkout');
         $checkoutPage->assertStatus(200);
         $checkoutPage->assertSee('Item Cart 1');
         $checkoutPage->assertSee('Item Cart 2');
 
         // Process checkout for entire cart
-        $response = $this->post('/checkout/proses', [
+        $response = $this->actingAs($customer)->post('/checkout/proses', [
             'is_cart' => 1,
             'checkout_mode' => 'cart',
             'product_id' => $p1->id,
@@ -367,11 +372,13 @@ class P12InnovationTest extends TestCase
 
     public function test_customer_can_submit_review_only_when_order_is_shipped(): void
     {
+        $customer = $this->getCustomer();
         $product = Product::firstOrFail();
 
         // 1. Pending order review attempt must be rejected
         $pendingTx = Transaction::create([
             'invoice_code' => 'INV-2026-REV01',
+            'user_id' => $customer->id,
             'product_id' => $product->id,
             'product_name' => $product->name,
             'customer_name' => 'Pending Reviewer',
@@ -384,7 +391,7 @@ class P12InnovationTest extends TestCase
             'status' => 'Pending',
         ]);
 
-        $failResponse = $this->post('/reviews/store', [
+        $failResponse = $this->actingAs($customer)->post('/reviews/store', [
             'transaction_id' => $pendingTx->id,
             'product_id' => $product->id,
             'rating' => 5,
@@ -395,7 +402,7 @@ class P12InnovationTest extends TestCase
         // 2. Shipped order review attempt succeeds
         $pendingTx->update(['status' => 'Shipped']);
 
-        $successResponse = $this->post('/reviews/store', [
+        $successResponse = $this->actingAs($customer)->post('/reviews/store', [
             'transaction_id' => $pendingTx->id,
             'product_id' => $product->id,
             'rating' => 5,
@@ -469,5 +476,103 @@ class P12InnovationTest extends TestCase
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
 
         $product->delete();
+    }
+
+    // =========================================================================
+    // 11. MODUL 5: PESANAN SAYA & MODUL 6: MANAJEMEN RESI DAN HAPUS PESANAN
+    // =========================================================================
+
+    public function test_pesanan_saya_displays_only_logged_in_customer_orders(): void
+    {
+        $customer = $this->getCustomer();
+        $otherCustomer = User::firstOrCreate(
+            ['email' => 'other.tester@vovoi.com'],
+            ['name' => 'Other Customer', 'password' => Hash::make('password123'), 'role' => 'customer']
+        );
+
+        $product = Product::firstOrFail();
+
+        $myTx = Transaction::create([
+            'invoice_code' => 'INV-2026-MY01',
+            'user_id' => $customer->id,
+            'product_id' => $product->id,
+            'product_name' => 'My Product Order',
+            'customer_name' => $customer->name,
+            'customer_phone' => '081234567890',
+            'customer_address' => 'Jl. Alamat Saya',
+            'courier' => 'JNE Reguler',
+            'quantity' => 1,
+            'shipping_cost' => 15000,
+            'total_amount' => 500000,
+            'status' => 'Shipped',
+            'tracking_number' => 'JNE-VOV-998811',
+        ]);
+
+        $otherTx = Transaction::create([
+            'invoice_code' => 'INV-2026-OTHER01',
+            'user_id' => $otherCustomer->id,
+            'product_id' => $product->id,
+            'product_name' => 'Other Secret Product',
+            'customer_name' => $otherCustomer->name,
+            'customer_phone' => '089988776655',
+            'customer_address' => 'Jl. Rahasia',
+            'courier' => 'J&T Express',
+            'quantity' => 1,
+            'shipping_cost' => 20000,
+            'total_amount' => 700000,
+            'status' => 'Pending',
+        ]);
+
+        $response = $this->actingAs($customer)->get('/pesanan-saya');
+        $response->assertStatus(200);
+        $response->assertSee('Pesanan Saya');
+        $response->assertSee('INV-2026-MY01');
+        $response->assertSee('JNE-VOV-998811');
+        $response->assertDontSee('INV-2026-OTHER01');
+
+        // Unauthenticated guest cannot view Pesanan Saya
+        $this->post('/logout');
+        $guestCheck = $this->get('/pesanan-saya');
+        $guestCheck->assertRedirect('/login');
+
+        $myTx->delete();
+        $otherTx->delete();
+    }
+
+    public function test_admin_can_update_status_and_tracking_number_and_delete_transaction(): void
+    {
+        $admin = $this->getAdmin();
+        $product = Product::firstOrFail();
+
+        $tx = Transaction::create([
+            'invoice_code' => 'INV-2026-ADM01',
+            'product_id' => $product->id,
+            'product_name' => $product->name,
+            'customer_name' => 'Admin Test Customer',
+            'customer_phone' => '081234567890',
+            'customer_address' => 'Jl. Admin No. 1',
+            'courier' => 'J&T Express',
+            'quantity' => 1,
+            'shipping_cost' => 20000,
+            'total_amount' => 300000,
+            'status' => 'Pending',
+        ]);
+
+        // Update to Shipped with tracking number
+        $response = $this->actingAs($admin)->post('/admin/transactions/'.$tx->id.'/status', [
+            'status' => 'Shipped',
+            'tracking_number' => 'JNT-VOV-776655',
+        ]);
+        $response->assertSessionHas('success');
+
+        $tx->refresh();
+        $this->assertEquals('Shipped', $tx->status);
+        $this->assertEquals('JNT-VOV-776655', $tx->tracking_number);
+
+        // Delete transaction
+        $delResponse = $this->actingAs($admin)->post('/admin/transactions/'.$tx->id.'/delete');
+        $delResponse->assertSessionHas('success');
+
+        $this->assertDatabaseMissing('transactions', ['id' => $tx->id]);
     }
 }

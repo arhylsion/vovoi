@@ -252,6 +252,42 @@
             background-color: #10b981;
         }
 
+        /* Responsive Breakpoints (Matriks QA No. 14) */
+        @media (max-width: 992px) {
+            .store-header {
+                padding: 12px 20px;
+                height: auto;
+                flex-wrap: wrap;
+                gap: 14px;
+            }
+            .header-search-form {
+                order: 3;
+                max-width: 100%;
+                width: 100%;
+            }
+            .store-nav {
+                gap: 8px;
+                overflow-x: auto;
+                max-width: 100%;
+            }
+            .store-main {
+                padding: 20px 16px 48px;
+            }
+        }
+        @media (max-width: 576px) {
+            .store-brand {
+                font-size: 20px;
+            }
+            .nav-item {
+                font-size: 13px;
+                padding: 6px 10px;
+            }
+            .nav-seller-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
         /* Print media styling */
         @media print {
             .store-header,
@@ -307,12 +343,18 @@
 
             @auth
                 @if(Auth::user()->isAdmin())
+                    <span class="nav-item" style="color: #475569; font-weight: 700;">
+                        Seller: {{ Auth::user()->name }}
+                    </span>
                     <a href="/admin/transactions" class="nav-seller-btn"
                         style="background-color: #eff6ff; color: #0B5ED7; border-color: #bfdbfe;">
-                        Panel Seller ({{ Auth::user()->name }}) &rarr;
+                        Panel Seller Center &rarr;
                     </a>
                 @else
-                    <a href="/profile" class="nav-item" style="color: #0B5ED7; font-weight: 700;">
+                    <a href="/pesanan-saya" class="nav-item" style="font-weight: 700; color: #0B5ED7;">
+                        Pesanan Saya
+                    </a>
+                    <a href="/profile" class="nav-item" style="color: #475569; font-weight: 600;">
                         Halo, {{ Auth::user()->name }}
                     </a>
                 @endif
@@ -327,7 +369,7 @@
                     Daftar
                 </a>
                 <a href="/login" class="nav-seller-btn">
-                    Login &rarr;
+                    Masuk &rarr;
                 </a>
             @endauth
         </nav>

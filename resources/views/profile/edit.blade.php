@@ -129,12 +129,19 @@
 
     <!-- Riwayat Transaksi Akun -->
     <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 32px; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
-        <h3 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 800; color: #0f172a;">
-            Riwayat Pesanan Anda
-        </h3>
-        <p style="margin: 0 0 20px 0; font-size: 13px; color: #64748b;">
-            Daftar pesanan yang pernah Anda lakukan menggunakan akun ini.
-        </p>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <h3 style="margin: 0 0 4px 0; font-size: 18px; font-weight: 800; color: #0f172a;">
+                    Riwayat Pesanan Anda
+                </h3>
+                <p style="margin: 0; font-size: 13px; color: #64748b;">
+                    Daftar pesanan yang pernah Anda lakukan menggunakan akun ini.
+                </p>
+            </div>
+            <a href="/pesanan-saya" style="font-size: 13px; font-weight: 700; color: #0B5ED7; text-decoration: none;">
+                Buka Halaman Pesanan Saya &rarr;
+            </a>
+        </div>
 
         @if($orders->count() > 0)
             <div style="overflow-x: auto;">

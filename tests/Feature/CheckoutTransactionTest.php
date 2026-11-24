@@ -4,15 +4,35 @@ namespace Tests\Feature;
 
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class CheckoutTransactionTest extends TestCase
 {
-    public function test_checkout_page_loads_with_correct_product_and_csrf_form(): void
+    protected function getCustomer(): User
+    {
+        return User::firstOrCreate(
+            ['email' => 'customer.checkout@vovoi.com'],
+            ['name' => 'Budi Tester', 'password' => Hash::make('password123'), 'role' => 'customer', 'phone' => '081234567890', 'address' => 'Jl. Pengujian No. 1']
+        );
+    }
+
+    public function test_guest_accessing_checkout_is_redirected_to_login(): void
     {
         $product = Product::firstOrFail();
 
         $response = $this->get('/checkout/'.$product->id);
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_checkout_page_loads_with_correct_product_and_csrf_form(): void
+    {
+        $customer = $this->getCustomer();
+        $product = Product::firstOrFail();
+
+        $response = $this->actingAs($customer)->get('/checkout/'.$product->id);
 
         $response->assertStatus(200);
         $response->assertSee($product->name);
@@ -25,9 +45,10 @@ class CheckoutTransactionTest extends TestCase
 
     public function test_checkout_page_without_id_loads_successfully_without_404(): void
     {
+        $customer = $this->getCustomer();
         $product = Product::firstOrFail();
 
-        $response = $this->get('/checkout');
+        $response = $this->actingAs($customer)->get('/checkout');
 
         $response->assertStatus(200);
         $response->assertSee($product->name);
@@ -65,6 +86,7 @@ class CheckoutTransactionTest extends TestCase
 
     public function test_store_transaction_calculates_total_and_saves_to_database(): void
     {
+        $customer = $this->getCustomer();
         $product = Product::firstOrFail();
 
         $payload = [
@@ -76,7 +98,7 @@ class CheckoutTransactionTest extends TestCase
             'quantity' => 2,
         ];
 
-        $response = $this->post('/checkout/proses', $payload);
+        $response = $this->actingAs($customer)->post('/checkout/proses', $payload);
 
         // Expected calculation: ($product->price * 2) + 20000 (J&T Express)
         $expectedShipping = 20000;
@@ -103,10 +125,12 @@ class CheckoutTransactionTest extends TestCase
 
     public function test_invoice_success_page_displays_transaction_details(): void
     {
+        $customer = $this->getCustomer();
         $product = Product::firstOrFail();
 
         $transaction = Transaction::create([
             'invoice_code' => 'INV-2026-7788',
+            'user_id' => $customer->id,
             'product_id' => $product->id,
             'product_name' => $product->name,
             'customer_name' => 'Budi Santoso',
@@ -119,7 +143,7 @@ class CheckoutTransactionTest extends TestCase
             'status' => 'Pending',
         ]);
 
-        $response = $this->get('/berhasil/'.$transaction->id);
+        $response = $this->actingAs($customer)->get('/berhasil/'.$transaction->id);
 
         $response->assertStatus(200);
         $response->assertSee('INV-2026-7788');

@@ -228,6 +228,11 @@
           <span class="receipt-detail-value">
             🚚 {{ $transaction->courier }}
           </span>
+          @if($transaction->tracking_number)
+            <div style="font-family: monospace; font-size: 12px; color: #047857; font-weight: 800; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; border: 1px solid #a7f3d0; margin-top: 4px; display: inline-block;">
+              Resi: {{ $transaction->tracking_number }}
+            </div>
+          @endif
         </div>
       </div>
 
@@ -436,6 +441,10 @@
         <button type="button" class="v-btn v-btn-secondary" onclick="window.print()" style="font-weight: 700; background: #0f172a; color: #ffffff; border: none;">
           🖨️ Cetak E-Invoice (Print PDF)
         </button>
+
+        <a href="/pesanan-saya" class="v-btn v-btn-secondary">
+          📦 Riwayat Pesanan Saya
+        </a>
 
         <a href="/katalog" class="v-btn v-btn-secondary">
           Lihat Katalog Lainnya

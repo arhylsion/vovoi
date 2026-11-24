@@ -2,6 +2,22 @@
 
 @section('title', 'Checkout Pesanan - VOVOI')
 
+@section('extra_css')
+<style>
+  .checkout-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 992px) {
+    .checkout-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+@endsection
+
 @section('konten_utama')
 <section style="padding: 24px 0 80px;">
   <div>
@@ -40,7 +56,7 @@
     </div>
 
     <!-- Main Grid -->
-    <div style="display: grid; grid-template-columns: 1fr 400px; gap: 36px; align-items: start;">
+    <div class="checkout-layout">
       
       <!-- KOLOM KIRI: FORMULIR INPUT DATA PEMBELI & VOUCHER -->
       <div style="background-color: #FFFFFF; padding: 32px; border-radius: 12px; border: 1px solid var(--border-light, #E2E8F0); box-shadow: 0 2px 10px rgba(0,0,0,0.02);">

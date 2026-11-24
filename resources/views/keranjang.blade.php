@@ -2,6 +2,22 @@
 
 @section('title', 'Keranjang Belanja - VOVOI')
 
+@section('extra_css')
+<style>
+  .cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 992px) {
+    .cart-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+@endsection
+
 @section('konten_utama')
 <section style="padding: 24px 0 80px; min-height: 80vh;">
   <div>
@@ -57,7 +73,7 @@
 
     @if(count($cart) > 0)
     <!-- Main Cart Layout Grid -->
-    <div style="display: grid; grid-template-columns: 1fr 380px; gap: 36px; align-items: start;">
+    <div class="cart-layout">
 
       <!-- Left Column: Cart Items -->
       <div>

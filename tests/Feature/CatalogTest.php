@@ -19,14 +19,16 @@ class CatalogTest extends TestCase
 
     public function test_catalog_displays_empty_state_when_no_products_exist(): void
     {
-        Product::query()->delete();
+        try {
+            Product::query()->delete();
 
-        $response = $this->get('/');
+            $response = $this->get('/');
 
-        $response->assertStatus(200);
-        $response->assertSee('Mohon maaf, produk belum tersedia di etalase kami.');
-
-        // Re-seed after test to keep 6 products
-        $this->artisan('db:seed', ['--class' => 'ProductSeeder']);
+            $response->assertStatus(200);
+            $response->assertSee('Mohon maaf, produk belum tersedia di etalase kami.');
+        } finally {
+            // Re-seed after test to keep products available
+            $this->artisan('db:seed', ['--class' => 'ProductSeeder']);
+        }
     }
 }

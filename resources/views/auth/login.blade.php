@@ -107,31 +107,25 @@
 
         <!-- Header Kartu Login -->
         <div style="text-align: center; margin-bottom: 28px;">
-            <span class="seller-tag">SELLER CENTER</span>
-            <h1 style="margin: 0 0 6px 0; font-size: 22px; font-weight:
-800; color: #0f172a;">
-                Masuk ke Portal Toko
+            <span class="seller-tag">SELLER CENTER &amp; AKUN RESMI</span>
+            <h1 style="margin: 0 0 6px 0; font-size: 22px; font-weight: 800; color: #0f172a;">
+                Masuk ke Portal Toko &amp; Akun
             </h1>
-            <p style="margin: 0; font-size: 13px; color: #64748b; lineheight: 1.5;">
-                Gunakan akun resmi administrator untuk mengelola pesanan
-                dan katalog produk.
+            <p style="margin: 0; font-size: 13px; color: #64748b; line-height: 1.5;">
+                Gunakan akun pembeli untuk checkout pesanan atau akun administrator untuk mengelola toko.
             </p>
         </div>
         <!-- Notifikasi Hijau Saat Berhasil Logout -->
         @if (session('status'))
             <div
-                style="background-color: #ecfdf5; color: #065f46; padding:
-12px 16px; border-radius: 8px; border: 1px solid #a7f3d0; margin-bottom:
-20px; font-size: 13px; font-weight: 600;">
+                style="background-color: #ecfdf5; color: #065f46; padding: 12px 16px; border-radius: 8px; border: 1px solid #a7f3d0; margin-bottom: 20px; font-size: 13px; font-weight: 600;">
                 {{ session('status') }}
             </div>
         @endif
         <!-- Peringatan Merah Saat Email atau Password Salah -->
         @if ($errors->any())
             <div
-                style="background-color: #fef2f2; color: #991b1b; padding:
-12px 16px; border-radius: 8px; border: 1px solid #fecaca; margin-bottom:
-20px; font-size: 13px; font-weight: 600; line-height: 1.4;">
+                style="background-color: #fef2f2; color: #991b1b; padding: 12px 16px; border-radius: 8px; border: 1px solid #fecaca; margin-bottom: 20px; font-size: 13px; font-weight: 600; line-height: 1.4;">
                 {{ $errors->first() }}
             </div>
         @endif
@@ -139,9 +133,9 @@
         <form action="/login" method="POST">
             @csrf
             <div class="input-group">
-                <label class="input-label">Alamat Email Admin</label>
-                <input type="email" name="email" value="{{ old('email') }}" placeholder="Contoh: admin@toko.com"
-                    required autofocus class="inputfield">
+                <label class="input-label">Alamat Email</label>
+                <input type="email" name="email" value="{{ old('email') }}" placeholder="Contoh: budi@vovoi.com atau admin@vovoi.com"
+                    required autofocus class="input-field">
             </div>
             <div class="input-group">
                 <label class="input-label">Kata Sandi (Password)</label>

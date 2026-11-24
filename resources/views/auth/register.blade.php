@@ -148,7 +148,7 @@
 
             <div class="input-group">
                 <label class="input-label">Kata Sandi (Password) <span style="color: #dc2626;">*</span></label>
-                <input type="password" name="password" placeholder="Minimal 6 karakter" required class="input-field">
+                <input type="password" name="password" placeholder="Minimal 8 karakter" required class="input-field">
             </div>
 
             <div class="input-group">

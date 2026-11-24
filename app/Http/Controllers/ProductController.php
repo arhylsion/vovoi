@@ -53,8 +53,9 @@ class ProductController extends Controller
 
         $products = $query->get();
         $categories = Category::withCount('products')->get();
+        $totalProductCount = Product::count();
 
-        return view('katalog', compact('products', 'categories'));
+        return view('katalog', compact('products', 'categories', 'totalProductCount'));
     }
 
     /**
@@ -538,5 +539,26 @@ class ProductController extends Controller
             'valid' => false,
             'message' => 'Kode voucher tidak valid atau telah kedaluwarsa.',
         ]);
+    }
+
+    /**
+     * Menampilkan Halaman Riwayat Pesanan Saya (Khusus Akun Customer yang Sedang Login)
+     * Sesuai Ketentuan Modul 5 & Matriks QA No. 9
+     */
+    public function myOrders(Request $request): View
+    {
+        $user = Auth::user();
+
+        $query = Transaction::with(['items.product', 'reviews'])
+            ->where('user_id', $user->id)
+            ->latest();
+
+        if ($request->filled('status') && in_array($request->status, ['Pending', 'Paid', 'Shipped', 'Cancelled'])) {
+            $query->where('status', $request->status);
+        }
+
+        $transactions = $query->get();
+
+        return view('pesanan_saya', compact('transactions', 'user'));
     }
 }
