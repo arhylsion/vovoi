@@ -21,6 +21,7 @@
         <div style="flex: 1; min-width: 220px; background-color: white; padding: 20px 25px; border-radius: 8px; border: 1px solid #cbd5e1; border-left: 6px solid #28A745;">
             <span style="font-size: 12px; color: #64748b; font-weight: bold;">TOTAL OMZET PENJUALAN</span>
             <h2 style="margin: 8px 0 0 0; font-size: 28px; color: #28A745;">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</h2>
+            <div style="font-size: 11px; color: #16a34a; font-weight: 600; margin-top: 4px;">*Pesanan Pending tidak terhitung</div>
         </div>
     </div>
 

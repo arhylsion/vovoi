@@ -83,6 +83,11 @@ class ProductController extends Controller
      */
     public function checkout(int|string|null $id = null): View|RedirectResponse
     {
+        // P1 Checklist: Tamu yang ingin beli diarahkan ke halaman login
+        if (! Auth::check()) {
+            return redirect()->guest('/login')->with('error', 'Silakan masuk ke akun Anda terlebih dahulu untuk melanjutkan pembelian.');
+        }
+
         $cart = session()->get('cart', []);
 
         // Skenario 1: Checkout Multi-Produk dari Keranjang Belanja jika ada barang di keranjang
@@ -149,6 +154,10 @@ class ProductController extends Controller
      */
     public function storeTransaction(Request $request): RedirectResponse
     {
+        if (! Auth::check()) {
+            return redirect('/login')->with('error', 'Silakan masuk ke akun Anda terlebih dahulu untuk menyelesaikan pembelian.');
+        }
+
         $request->validate([
             'customer_name' => 'required|string|max:150',
             'customer_phone' => 'required|string|max:30',
@@ -204,7 +213,7 @@ class ProductController extends Controller
                 $qty = max(1, (int) $request->input('quantity', 1));
 
                 if ($product->stock < $qty) {
-                    return redirect()->back()->with('error', "Stok {$product->name} tidak mencukupi (sisa: {$product->stock}).");
+                    return redirect()->back()->withInput()->with('error', "Stok {$product->name} tidak mencukupi (sisa: {$product->stock}).");
                 }
 
                 $subtotal = $product->price * $qty;
@@ -298,6 +307,17 @@ class ProductController extends Controller
 
         if (! $transaction) {
             return redirect('/katalog');
+        }
+
+        // P5 Checklist: Customer tidak boleh membuka pesanan milik customer lain (Ditolak 403)
+        if ($transaction->user_id) {
+            if (! Auth::check()) {
+                return redirect()->guest('/login')->with('error', 'Silakan masuk terlebih dahulu untuk melihat pesanan ini.');
+            }
+
+            if ($transaction->user_id !== Auth::id() && ! Auth::user()->isAdmin()) {
+                abort(403, 'Akses ditolak: Anda tidak memiliki izin untuk melihat detail pesanan ini.');
+            }
         }
 
         return view('berhasil', compact('transaction'));

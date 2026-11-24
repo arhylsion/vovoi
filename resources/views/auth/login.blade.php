@@ -170,9 +170,16 @@ color: #475569; cursor: pointer; font-weight: 500;">
                 </label>
             </div>
             <button type="submit" class="btn-submit">
-                Masuk ke Seller Center &rarr;
+                Masuk ke Akun &rarr;
             </button>
         </form>
+        <!-- Tautan ke Halaman Register Customer -->
+        <div style="text-align: center; margin-top: 20px; font-size: 13px; color: #64748b;">
+            Belum memiliki akun?
+            <a href="/register" style="color: #0B5ED7; text-decoration: none; font-weight: 700;">
+                Daftar sekarang
+            </a>
+        </div>
         <!-- Tautan Kembali ke Beranda Pembeli -->
         <div style="text-align: center; margin-top: 26px; padding-top:
 20px; border-top: 1px solid #f1f5f9;">

@@ -22,7 +22,8 @@ class AdminController extends Controller
 
         $totalProducts = Product::count();
         $totalTransactions = Transaction::count();
-        $totalRevenue = Transaction::where('status', '!=', 'Cancelled')->sum('total_amount');
+        // P10 Checklist: Pesanan Pending tidak dihitung ke kartu omzet (hanya Paid, Shipped, Completed)
+        $totalRevenue = Transaction::whereIn('status', ['Paid', 'Shipped', 'Completed'])->sum('total_amount');
 
         return view('admin.transactions', compact(
             'transactions',
@@ -150,7 +151,7 @@ class AdminController extends Controller
         $shippedOrders = $transactions->where('status', 'Shipped')->count();
         $pendingOrders = $transactions->where('status', 'Pending')->count();
         $cancelledOrders = $transactions->where('status', 'Cancelled')->count();
-        $totalRevenue = $transactions->where('status', '!=', 'Cancelled')->sum('total_amount');
+        $totalRevenue = $transactions->whereIn('status', ['Paid', 'Shipped', 'Completed'])->sum('total_amount');
 
         return view('admin.report_pdf', compact(
             'transactions',

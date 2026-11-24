@@ -2,13 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class AuthController extends Controller
 {
+    public function showRegister(): View|RedirectResponse
+    {
+        if (Auth::check()) {
+            return redirect('/profile');
+        }
+
+        return view('auth.register');
+    }
+
+    public function register(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:150'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['nullable', 'string', 'max:30'],
+            'address' => ['nullable', 'string', 'max:500'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ], [
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.unique' => 'Email ini sudah terdaftar. Silakan gunakan email lain atau login.',
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min' => 'Kata sandi minimal 6 karakter.',
+            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'password' => Hash::make($request->password),
+            'role' => 'customer',
+        ]);
+
+        // Login otomatis setelah registrasi sesuai P3 Checklist
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect('/')->with('success', 'Pendaftaran akun berhasil! Selamat datang, '.$user->name.'!');
+    }
+
     public function showlogin(Request $request): View|RedirectResponse
     {
         if (Auth::check()) {
